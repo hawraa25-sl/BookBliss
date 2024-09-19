@@ -25,10 +25,11 @@ connection.connect((err) => {
 
 // Create a new book
 app.post('/books', (req, res) => {
-  const { title, author, published_year } = req.body;
-  const query = 'INSERT INTO books (title, author, published_year) VALUES (?, ?, ?)';
-  connection.query(query, [title, author, published_year], (err, result) => {
+  const { title, author, genre, isbn, stock, price, published_date } = req.body;
+  const query = 'INSERT INTO books (title, author, genre, isbn, stock, price, published_date) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  connection.query(query, [title, author, genre, isbn, stock, price, published_date], (err, result) => {
     if (err) {
+      console.error('Error creating book:', err);
       res.status(500).json({ error: 'Error creating book' });
     } else {
       res.status(201).json({ id: result.insertId, message: 'Book created successfully' });
