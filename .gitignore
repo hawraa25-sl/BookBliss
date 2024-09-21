@@ -1,1 +1,4 @@
 node_modules
+
+# Ignore config file with sensitive information
+backend/config.js
