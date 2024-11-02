@@ -1,0 +1,2 @@
+-- Copy the contents of your Schema.sql file here
+-- This will be executed when the MySQL container starts for the first time 

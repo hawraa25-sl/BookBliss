@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - VITE_API_URL=http://localhost:3000
+
+  backend:
+    build: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_USER=bookstore
+      - DB_PASSWORD=bookstore123
+      - DB_NAME=bookstore_db
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=bookstore_db
+      - MYSQL_USER=bookstore
+      - MYSQL_PASSWORD=bookstore123
+
+volumes:
+  mysql_data: 
