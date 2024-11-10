@@ -18,20 +18,28 @@ connection.connect((err) => {
 });
 
 app.get('/', (req, res) => {
+  res.render("index")
+})
+
+app.get('/books', (req, res) => {
   const query = 'SELECT * FROM Books';
   connection.query(query, (err, results) => {
     if (err) {
       console.log(err)
       res.status(500).json({ error: 'Error fetching books' });
     } else {
-      res.render('index', {
-        title: "My first page",
-        message: "Hello World!",
+      res.render('books', {
         books: results
       })
     }
   });
 })
+
+app.get('/*', (req, res) => {
+  res.redirect('/')
+})
+
+// app.get("/admin", (req, res) => )
 
 // app.get('/books')
 app.listen(port, () => {
