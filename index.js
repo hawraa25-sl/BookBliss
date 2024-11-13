@@ -5,7 +5,7 @@ const port = 3000
 const config = require('./config');
 
 app.set('view engine', 'pug')
-
+app.use(express.static('public'));
 // MySQL connection
 const connection = mysql.createConnection(config.databaseUrl);
 
@@ -34,6 +34,20 @@ app.get('/books', (req, res) => {
     }
   });
 })
+
+// app.get('/catlog', (req, res) => {
+//   const query = 'SELECT * FROM catalog';
+//   connection.query(query, (err, results) => {
+//     if (err) {
+//       console.log(err)
+//       res.status(500).json({ error: 'Error fetching catalog' });
+//     } else {
+//       res.render('catalog', {
+//         books: results
+//       })
+//     }
+//   });
+//  })
 
 app.get('/*', (req, res) => {
   res.redirect('/')
