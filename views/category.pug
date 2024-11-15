@@ -1,0 +1,23 @@
+//- extends layout
+
+block navbar
+    h1 BookBliss
+    p Find your next favorite book
+
+block content
+    section(id="books")
+        h2= categoryName
+        p.category-description= description
+        .book-listing
+            each book in books
+                .book-card
+                    .book-img
+                        if book.cover_image_url
+                            img(src=book.cover_image_url, alt=book.title)
+                        else
+                            img(src="/images/default-book.png", alt="Default book cover")
+                    .book-info
+                        h3= book.title
+                        p.author= book.author
+                        p.price $#{book.price}
+                        button.btn-details(onclick=`window.location.href='/book/${book.book_id}'`) View Details

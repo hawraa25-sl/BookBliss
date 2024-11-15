@@ -8,6 +8,20 @@ html(lang="en")
 
   body
     header
+    <script>
+    // Helper function for category descriptions
+      function getCategoryDescription(category) {
+        const descriptions = {
+            'Personal Finance': 'Take control of your financial future with our personal finance book collection!',
+            'Psychology': 'Dive into our psychology book collection and unlock the secrets of the mind!',
+            'Romance': 'Fall in love with reading through our enchanting romance book collection!',
+            'Self Help': 'Transform your life with our self-help collection!',
+            'Horror': 'Explore the darkest corners of imagination with our horror collection!',
+            'Others': 'Discover unique reads across various genres in our diverse collection!'
+        };
+        return descriptions[category] || 'Explore our amazing collection of books!';
+      }
+    </script>
       nav.navbar
         .logo
           h2 Sada Al-Horof
@@ -35,51 +49,18 @@ html(lang="en")
         img(src="/images/IMG.jpg" alt="")
 
     //- Categories section
-    // Categories Section
-section#categories
-  .cat-row
-    .cat-header
-      h2 Book Categories
-      p Lorem ipsum dolor sit amet consectetur adipisicing elit. Et, debitis similique. Adipisci, doloribus, repellat excepturi.
-
-    .cat-books
-      .books
-        .book-img
-          img(src="/images/money2jpg.jpg" alt="")
-        h4 Personal Finane
-        p   Take control of your financial future with our personal finance book collection! These guides are packed with practical advice, budgeting tips, and investment strategies to help you achieve your money goals.
-
-      .books
-        .book-img
-          img(src="/images/psychology.jpg" alt="")
-        h4 Psychology
-        p  Dive into our psychology book collection and unlock the secrets of the mind! From fascinating theories to practical tips for everyday life, these books are perfect for anyone curious about how we think and feel.
-
-      .books
-        .book-img
-          img(src="/images/love1jpg.jpg" alt="")
-        h4 Romance 
-        p  Fall in love with reading through our enchanting romance book collection! From heartwarming love stories to steamy, passionate tales, our selection has the perfect book to sweep you off your feet.
-
-      .books
-        .book-img
-          img(src="/images/selfHelp.jpg" alt="")
-        h4  Self Help
-        p  Transform your life with our inspiring self-help book collection! Packed with practical advice, motivational tips, and personal growth strategies, these books are your guide to living your best life..
-
-      .books
-        .book-img
-          img(src="/images/fictionjpg.jpg" alt="")
-        h4  Fiction
-        p  Escape into new worlds with our diverse fiction book collection! From thrilling mysteries adventures to heartfelt dramas and witty comedies, our selection has something to captivate every reader.
-
-      .books
-        .book-img
-          img(src="/images/Tecnology.jpg" alt="")
-        h4  Technology and Innovation
-        p Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum perferendis obcaecati ad quibusdam.
-
-     
+    section#categories
+      .cat-row
+        .cat-header
+          h2 Book Categories
+          p Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        .cat-books
+          each category in ['Finance', 'Psychology', 'Romance', 'SelfHelp', 'Fiction', 'Horror']
+            .books(onclick=`window.location.href='/category/${category}'`)
+              .book-img
+                img(src=`/images/${category}.jpg` alt=category)
+              h4= category
+              p= getCategoryDescription(category)
         //- About Section
     section#about
       .set-row
