@@ -16,23 +16,13 @@ block content
                 h2 Book Categories
                 p Lorem ipsum dolor sit amet consectetur adipisicing elit.
 
-     .cat-books
-    each category in [
-        { name: 'Finance', img: '/images/finance-custom.jpg' },
-        { name: 'Psychology', img: '/images/psychology-custom.jpg' },
-        { name: 'Romance', img: '/images/romance-custom.jpg' },
-        { name: 'SelfHelp', img: '/images/self-help-custom.jpg' },
-        { name: 'Fiction', img: '/images/fiction-custom.jpg' },
-        { name: 'Horror', img: '/images/horror-custom.jpg' }
-    ]
-        a.category-item(href=`/category/${category.name}`)
-            .book-img
-                img(src=category.img alt=category.name)
-            h4= category.name
+        .cat-books
+            each category in categories
+                a.category-item(href=`/category/${category.name}`)
+                    .book-img
+                        img(src=category.image alt=category.name)
+                    h4= category.name
 
-
-                        //- p= getCategoryDescription(category)
-            //- About Section
     section#about
         .set-row
             img(src="/images/books.png" alt="")
@@ -42,23 +32,23 @@ block content
                 a.btn2(href="#") Read More
 
     //- Blog Section
-    section#blog
-        h2.blog-header From Our Blog
-        .set-row
-            .col
-                img(src="/images/pic1jpg.jpg" alt="")
-                h4 Eius, dolo? Vel velit sed doloremque
-                p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
-                a(href="#") Read More
-                .dates
-                    span 19 January 2021
-            .col
-                img(src="/images/pic2.jpg" alt="")
-                h4 Eius, dolo? Vel velit sed doloremque
-                p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
-                a(href="#") Read More
-                .dates
-                    span 19 January 2021
+    //- section#blog
+    //-     h2.blog-header From Our Blog
+    //-     .set-row
+    //-         .col
+    //-             img(src="/images/pic1jpg.jpg" alt="")
+    //-             h4 Eius, dolo? Vel velit sed doloremque
+    //-             p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
+    //-             a(href="#") Read More
+    //-             .dates
+    //-                 span 19 January 2021
+    //-         .col
+    //-             img(src="/images/pic2.jpg" alt="")
+    //-             h4 Eius, dolo? Vel velit sed doloremque
+    //-             p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
+    //-             a(href="#") Read More
+    //-             .dates
+    //-                 span 19 January 2021
 
     //- Contact Section
     section#contactus

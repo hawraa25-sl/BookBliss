@@ -6,6 +6,7 @@ const port = 3000
 
 const config = require('./config');
 const categoryRoutes = require('./routes/categoryRoutes');
+const { categoryList } = require('./constants');
 
 app.use(express.urlencoded({ extended: false }));
 
@@ -28,19 +29,10 @@ connection.connect((err) => {
 
 // Set up session middleware
 app.use(session({
-  secret: 'your_secret_key',  // Secret to sign the session ID cookie
-  resave: false,              // Don't save session if it's not modified
-  saveUninitialized: false,   // Don't create session for unauthenticated users
+  secret: 'your_secret_key',
+  resave: false,
+  saveUninitialized: false,
 }));
-
-const descriptions = {
-  'Personal Finance': 'Take control of your financial future with our personal finance book collection!',
-  'Psychology': 'Dive into our psychology book collection and unlock the secrets of the mind!',
-  'Romance': 'Fall in love with reading through our enchanting romance book collection!',
-  'Self Help': 'Transform your life with our self-help collection!',
-  'Horror': 'Explore the darkest corners of imagination with our horror collection!',
-  'Others': 'Discover unique reads across various genres in our diverse collection!'
-};
 
 app.use(function (req, res, next) {
   var _render = res.render;
@@ -52,19 +44,10 @@ app.use(function (req, res, next) {
   next();
 });
 
+// home
 app.get('/', (req, res) => {
-  const query = 'SELECT DISTINCT genre as category FROM books ORDER BY category';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ error: 'Error fetching categories' });
-    } else {
-      console.log(req.session.user)
-      res.render("home", {
-        categories: results.map(result => result.Category),
-        getCategoryDescription: (category) => descriptions[category] || 'Explore our collection!'
-      });
-    }
+  res.render("home", {
+    categories: categoryList,
   });
 });
 
