@@ -16,12 +16,21 @@ block content
                 h2 Book Categories
                 p Lorem ipsum dolor sit amet consectetur adipisicing elit.
 
-            .cat-books
-                each category in ['Finance', 'Psychology', 'Romance', 'SelfHelp', 'Fiction', 'Horror']
-                    a.category-item(href=`/category/${category}`)
-                        .book-img
-                            img(src=`/images/${category}.jpg` alt=category)
-                        h4= category
+     .cat-books
+    each category in [
+        { name: 'Finance', img: '/images/finance-custom.jpg' },
+        { name: 'Psychology', img: '/images/psychology-custom.jpg' },
+        { name: 'Romance', img: '/images/romance-custom.jpg' },
+        { name: 'SelfHelp', img: '/images/self-help-custom.jpg' },
+        { name: 'Fiction', img: '/images/fiction-custom.jpg' },
+        { name: 'Horror', img: '/images/horror-custom.jpg' }
+    ]
+        a.category-item(href=`/category/${category.name}`)
+            .book-img
+                img(src=category.img alt=category.name)
+            h4= category.name
+
+
                         //- p= getCategoryDescription(category)
             //- About Section
     section#about
