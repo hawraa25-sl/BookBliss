@@ -6,8 +6,6 @@ const port = 3000
 const config = require('./config');
 const categoryRoutes = require('./routes/categoryRoutes');
 
-
-
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
@@ -40,17 +38,13 @@ app.get('/', (req, res) => {
           console.log(err);
           res.status(500).json({ error: 'Error fetching categories' });
       } else {
-          res.render("index", {
+          res.render("home", {
               categories: results.map(result => result.Category),
               getCategoryDescription: (category) => descriptions[category] || 'Explore our collection!'
           });
       }
   });
 });
-
-app.get('/', (req, res) => {
-  res.render("index")
-})
 
 app.get('/books', (req, res) => {
   const query = 'SELECT * FROM Books';
@@ -69,8 +63,6 @@ app.get('/books', (req, res) => {
 app.get('/*', (req, res) => {
   res.redirect('/')
 })
-
-// app.get("/admin", (req, res) => )
 
 // app.get('/books')
 app.listen(port, () => {

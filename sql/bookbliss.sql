@@ -1,4 +1,6 @@
-USE DATABASE bookbliss
+CREATE DATABASE IF NOT EXISTS bookbliss;
+USE bookbliss;
+
 DROP TABLE IF EXISTS `customers`;
 CREATE TABLE `customers` (
   `customer_id` int NOT NULL AUTO_INCREMENT,
@@ -10,7 +12,7 @@ CREATE TABLE `customers` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`customer_id`),
   UNIQUE KEY `email` (`email`)
-)
+);
 
 DROP TABLE IF EXISTS `addresses`;
 CREATE TABLE `addresses` (
@@ -25,7 +27,7 @@ CREATE TABLE `addresses` (
   PRIMARY KEY (`address_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `addresses_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`)
-)
+);
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
@@ -36,7 +38,7 @@ CREATE TABLE `admin` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `email` (`email`)
-)
+);
 
 DROP TABLE IF EXISTS `books`;
 CREATE TABLE books (
@@ -52,7 +54,7 @@ CREATE TABLE books (
   `cover_image_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`book_id`),
   UNIQUE KEY `isbn` (`isbn`)
-)
+);
 
 DROP TABLE IF EXISTS carts;
 CREATE TABLE `carts` (
@@ -62,7 +64,7 @@ CREATE TABLE `carts` (
   PRIMARY KEY (`cart_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `carts_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`)
-)
+);
 
 DROP TABLE IF EXISTS cart_items;
 CREATE TABLE `cart_items` (
@@ -76,7 +78,7 @@ CREATE TABLE `cart_items` (
   KEY `book_id` (`book_id`),
   CONSTRAINT `cartitems_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `carts` (`cart_id`),
   CONSTRAINT `cartitems_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`)
-)
+);
 
 
 DROP TABLE IF EXISTS `gift_cards`;
@@ -88,7 +90,7 @@ CREATE TABLE `gift_cards` (
   `is_redeemed` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`gift_card_id`),
   UNIQUE KEY `code` (`code`)
-)
+);
 
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE orders (
@@ -103,7 +105,7 @@ CREATE TABLE orders (
   KEY `gift_card_id` (`gift_card_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`gift_card_id`) REFERENCES `gift_cards` (`gift_card_id`)
-)
+);
 
 DROP TABLE IF EXISTS `order_items`;
 CREATE TABLE order_items (
@@ -117,7 +119,7 @@ CREATE TABLE order_items (
   KEY `book_id` (`book_id`),
   CONSTRAINT `orderitems_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`),
   CONSTRAINT `orderitems_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`)
-)
+);
 
 DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
@@ -133,4 +135,4 @@ CREATE TABLE reviews (
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`),
   CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `books` (`book_id`),
   CONSTRAINT `reviews_chk_1` CHECK ((`rating` between 1 and 5))
-)
+);

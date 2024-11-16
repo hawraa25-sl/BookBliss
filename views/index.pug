@@ -1,122 +1,59 @@
+//- index shows up in more than one page
+
 html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title online Book store | HTML CSS 
-    link(rel="stylesheet" href="/stylesheets/style.css")
-    link(rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css")
+	head
+		meta(charset="UTF-8")
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		title online Book store | HTML CSS 
+		link(rel="stylesheet" href="/stylesheets/style.css")
+		link(rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css")
 
-  body
-    header
-    <script>
-    // Helper function for category descriptions
-      function getCategoryDescription(category) {
-        const descriptions = {
-            'Personal Finance': 'Take control of your financial future with our personal finance book collection!',
-            'Psychology': 'Dive into our psychology book collection and unlock the secrets of the mind!',
-            'Romance': 'Fall in love with reading through our enchanting romance book collection!',
-            'Self Help': 'Transform your life with our self-help collection!',
-            'Horror': 'Explore the darkest corners of imagination with our horror collection!',
-            'Others': 'Discover unique reads across various genres in our diverse collection!'
-        };
-        return descriptions[category] || 'Explore our amazing collection of books!';
-      }
-    </script>
-      nav.navbar
-        .logo
-          h2 Sada Al-Horof
-        .navmenu
-          ul
-            li
-              a(href="#home") Home
-            li
-              a(href="#categories") Categories
-            li
-              a(href="#about") About
-            li
-              a(href="#blog") Blog
-            li
-              a(href="#contactus") Contact US
-          .search-box
-            input(type="search" class="search" placeholder="Search here...")
-            i.bx.bx-search
-      .main-header
-        .header
-          h5 Sada Al-Horof Bookstore
-          h2 For All your reading Needs
-          p Creating a space for people to escape into stories and find comfort during tough times
-          a.btn(href="") Read More
-        img(src="/images/IMG.jpg" alt="")
+	body
+		<script>
+		// Helper function for category descriptions
+			function getCategoryDescription(category) {
+				const descriptions = {
+					'Personal Finance': 'Take control of your financial future with our personal finance book collection!',
+					'Psychology': 'Dive into our psychology book collection and unlock the secrets of the mind!',
+					'Romance': 'Fall in love with reading through our enchanting romance book collection!',
+					'Self Help': 'Transform your life with our self-help collection!',
+					'Horror': 'Explore the darkest corners of imagination with our horror collection!',
+					'Others': 'Discover unique reads across various genres in our diverse collection!'
+				};
+				return descriptions[category] || 'Explore our amazing collection of books!';
+			}
+		</script>
 
-    //- Categories section
-    section#categories
-      .cat-row
-        .cat-header
-          h2 Book Categories
-          p Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        .cat-books
-          each category in ['Finance', 'Psychology', 'Romance', 'SelfHelp', 'Fiction', 'Horror']
-            .books(onclick=`window.location.href='/category/${category}'`)
-              .book-img
-                img(src=`/images/${category}.jpg` alt=category)
-              h4= category
-              p= getCategoryDescription(category)
-        //- About Section
-    section#about
-      .set-row
-        img(src="/images/books.png" alt="")
-        .about-content
-          h2 About Our Bookstore
-          p Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-          a.btn2(href="#") Read More
+		//- This is gonna be common across all pages
+		nav.navbar
+			.logo
+				h2 Sada Al-Horof
+			.navmenu
+				ul
+					li
+						a(href="/") Home
+					li
+						a(href="#categories") Categories
+					li
+						a(href="#about") About
+					li
+						a(href="#blog") Blog
+					li
+						a(href="#contactus") Contact US
+				.search-box
+					input(type="search" class="search" placeholder="Search here...")
+					i.bx.bx-search
 
-    //- Blog Section
-    section#blog
-      h2.blog-header From Our Blog
-      .set-row
-        .col
-          img(src="/images/pic1jpg.jpg" alt="")
-          h4 Eius, dolo? Vel velit sed doloremque
-          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
-          a(href="#") Read More
-          .dates
-            span 19 January 2021
-        .col
-          img(src="/images/pic2.jpg" alt="")
-          h4 Eius, dolo? Vel velit sed doloremque
-          p Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit corrupti quisquam minima aliquid ut asperiores recusandae magni ad consectetur.
-          a(href="#") Read More
-          .dates
-            span 19 January 2021
+		block content
 
-    //- Contact Section
-    section#contactus
-      .contact-row
-        .col
-          h2 Contact Us
-          form(action="")
-            input(type="text" placeholder="Name")
-            br
-            input(type="text" placeholder="Email")
-            br
-            input(type="text" placeholder="Phone Number")
-            br
-            textarea(cols="20" rows="5" placeholder="Message" id="")
-            br
-            input(type="submit" value="SEND")
-        .col
-          img(src="/images/contactjpg.jpg" alt="")
+		//- Footer Also gonna be common
+		.footer
+			.footer
+				p @2024 All Rights Reserved By Free Online Book Shop
 
-    //- Footer
-    .footer
-      .footer
-        p @2024 All Rights Reserved By Free Online Book Shop
+		//- Custom Script
+		script(src="script.js")
 
-    //- Custom Script
-    script(src="script.js")
-    block content
-      p This is the main page
-
-    //- Add these at the bottom of your Pug template (usually before closing body tag)
-    //-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+		//- Add these at the bottom of your Pug template (usually before closing body tag)
+		//-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
