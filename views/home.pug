@@ -1,7 +1,6 @@
 extends index
 
 block content
-
     .main-header
         .header
             h5 Sada Al-Horof Bookstore
@@ -16,13 +15,14 @@ block content
             .cat-header
                 h2 Book Categories
                 p Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
             .cat-books
                 each category in ['Finance', 'Psychology', 'Romance', 'SelfHelp', 'Fiction', 'Horror']
-                    .books(onclick=`window.location.href='/category/${category}'`)
+                    a.category-item(href=`/category/${category}`)
                         .book-img
                             img(src=`/images/${category}.jpg` alt=category)
                         h4= category
-                        p= getCategoryDescription(category)
+                        //- p= getCategoryDescription(category)
             //- About Section
     section#about
         .set-row

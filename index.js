@@ -1,4 +1,5 @@
 const express = require('express')
+const session = require('express-session');
 const mysql = require("mysql2")
 const app = express()
 const port = 3000
@@ -6,9 +7,12 @@ const port = 3000
 const config = require('./config');
 const categoryRoutes = require('./routes/categoryRoutes');
 
+app.use(express.urlencoded({ extended: false }));
+
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
+
 app.use('/category', categoryRoutes);
 
 // MySQL connection
@@ -22,6 +26,13 @@ connection.connect((err) => {
   console.log('Connected to MySQL database');
 });
 
+// Set up session middleware
+app.use(session({
+  secret: 'your_secret_key',  // Secret to sign the session ID cookie
+  resave: false,              // Don't save session if it's not modified
+  saveUninitialized: false,   // Don't create session for unauthenticated users
+}));
+
 const descriptions = {
   'Personal Finance': 'Take control of your financial future with our personal finance book collection!',
   'Psychology': 'Dive into our psychology book collection and unlock the secrets of the mind!',
@@ -31,18 +42,29 @@ const descriptions = {
   'Others': 'Discover unique reads across various genres in our diverse collection!'
 };
 
+app.use(function (req, res, next) {
+  var _render = res.render;
+  res.render = function (view, options, fn) {
+    if (!options) options = {}
+    Object.assign(options, { user: req?.session?.user });
+    _render.call(this, view, options, fn);
+  }
+  next();
+});
+
 app.get('/', (req, res) => {
   const query = 'SELECT DISTINCT genre as category FROM books ORDER BY category';
   connection.query(query, (err, results) => {
-      if (err) {
-          console.log(err);
-          res.status(500).json({ error: 'Error fetching categories' });
-      } else {
-          res.render("home", {
-              categories: results.map(result => result.Category),
-              getCategoryDescription: (category) => descriptions[category] || 'Explore our collection!'
-          });
-      }
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Error fetching categories' });
+    } else {
+      console.log(req.session.user)
+      res.render("home", {
+        categories: results.map(result => result.Category),
+        getCategoryDescription: (category) => descriptions[category] || 'Explore our collection!'
+      });
+    }
   });
 });
 
@@ -58,6 +80,84 @@ app.get('/books', (req, res) => {
       })
     }
   });
+})
+
+app.get('/account', (req, res) => {
+  res.render('account')
+})
+
+// Handle user login
+app.post('/login', (req, res) => {
+  const { email, password } = req.body;
+
+  connection.query('SELECT * FROM customers WHERE email = ?', [email], async (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.render('account', { error: 'Unknown error occured' });
+    }
+    if (results.length === 0) {
+      return res.render('account', { error: "Customer not found" });
+    }
+
+    const user = results[0];
+    // const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = password === user.password_hash;
+
+    if (isPasswordValid) {
+      req.session.user = user;
+      res.redirect('/');
+    } else {
+      res.render('account', { error: 'Invalid password' });
+    }
+
+  });
+});
+
+app.post('/create-account', (req, res) => {
+  // Destructure incoming data from the form
+  const { first_name, last_name, email, phone_number, password } = req.body;
+
+  // Ensure all fields are provided
+  if (!first_name || !last_name || !email || !phone_number || !password) {
+    return res.render('account', { error: 'Ensure all fields are provided' })
+  }
+
+  // SQL query to insert the new customer into the database
+  const query = `
+    INSERT INTO customers (first_name, last_name, email, phone_number, password_hash)
+    VALUES (?, ?, ?, ?, ?);
+  `;
+
+  // Execute the query
+  connection.query(query, [first_name, last_name, email, phone_number, password], (err, result) => {
+    if (err) {
+      console.error(err)
+      return res.render('account', { error: "Unknown error occured" })
+    }
+
+    res.redirect('/');
+  });
+
+});
+
+// Logout route to destroy the session
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).send('Error logging out');
+    }
+    res.redirect('/');
+  });
+});
+
+
+// app.post('/add-to-cart', (req, res) => {
+
+// })
+
+
+app.get('/admin', (req, res) => {
+  res.send("This is the admin page<br>Under construction")
 })
 
 app.get('/*', (req, res) => {

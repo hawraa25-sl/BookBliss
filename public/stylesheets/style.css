@@ -1,19 +1,23 @@
-*{
+* {
     margin: 0;
     padding: 0; 
     text-decoration: 0;
     list-style: none;
-    font-family: "poppins";
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
+
 .navbar{
     display: flex;
     justify-content:  space-between ;
     align-items: center;
     text-align: center;
-width: 100%;
-height: 80px;
-background-color: #11d1ae87;
+    width: 100%;
+    height: 80px;
+    background-color: #11d1ae87;
 }
+
 .navbar h2{
     color :#ffff;
     font-size:25px;
@@ -119,13 +123,21 @@ align-items: center;
 width: 100%;
 margin-top: 20px;
 }
-.cat-books .books{
+
+.cat-books .category-item{
     width: 360px;
     height: auto;
     padding: 20px 30px;
     position: relative;
+    color: black;
 }
-.cat-books .books .book-img{
+
+.cat-books .category-item:hover {
+    transform: scale(1.2);
+    transition: 200ms
+}
+
+.cat-books .category-item .book-img{
     background-color: white;
     padding : 18px;
     border-radius: 50%;
@@ -135,17 +147,17 @@ margin-top: 20px;
     position: relative ;
     left: 20px;
 }
-.cat-books .books img{
+.cat-books .category-item img{
     width: 129%;
 
 }
-.cat-books .books h4{
+.cat-books .category-item h4{
     margin-top: 16px;
     font-size: 22px;
     position: relative;
     nav-left: 5%;
 }
-.cat-books .books p{
+.cat-books .category-item p{
     font-size: 16px;
     padding-top: 10px;
 }
@@ -347,7 +359,7 @@ font-weight: 600;
     right: 0;
 
 }
-.cat-books .books .book-img{
+.cat-books .category-item .book-img{
     position: relative;
     left: 25%;
 }
@@ -424,11 +436,11 @@ font-weight: 600;
         position: relative;
         left: 0%;
     }
-    .cat-books .books .book-img{
+    .cat-books .category-item .book-img{
         position: relative;
         left:35%;
     }
-    .cat-books .books img{
+    .cat-books .category-item img{
         width: 100%;
     }
     .set-row .col .dates{
@@ -454,10 +466,10 @@ font-weight: 600;
         width: 260px;
     }
 
-.cat-books .books {
+.cat-books .category-item {
     width: 260px;
 }
-.cat-books .books .book-img{
+.cat-books .category-item .book-img{
     position: relative;
     left: 25%;
 
@@ -469,4 +481,19 @@ font-weight: 600;
 .set-row .col{
     width: 280px;
 }
+}
+
+#nav-account-icon {
+    color: white;
+    font-size: 30px;
+    padding: 15px;
+    margin-right: 20px;
+    border-radius: 100%;
+    background-color: rgba(0,0,0,0.1);
+    cursor: pointer;
+}
+
+#nav-account-icon:hover {
+    background-color: black;
+    transition: 200ms;
 }
