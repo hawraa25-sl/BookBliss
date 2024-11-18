@@ -13,12 +13,51 @@ block styles
       }
 
       .form-container {
-        margin-top: 20px;
+        margin-top: 10px;
+        display:flex;
+        justify-content: space-between;
+        gap:40px;
+        font-size:15px;
       }
+       .form-container form{
+        padding:  
+       
+       }
+       input {
+        cursor : pointer;
+        text-align :center;
+        height:35px;
+        
+        border-radius:8px;
+       background-color:       
+           outline:;
+
+       }
+     button{
+      cursor:pointer;
+      border : none;
+      border-radius:18px;
+          background-color:     #10839dbb; 
+          width:50%;
+          height:40px;
+     }
+     label{
+      color :    #10839dbb; 
+     }
+     h2{
+      color  :  #10839dbb; 
+     }
+     button:hover{
+      color:  #10839dbb; 
+       transform: scale(1.2);
+       transition:1s;
+     
+     }
 
       .error-message {
         color: red
       }
+
 
 block content
     if user
@@ -31,10 +70,11 @@ block content
         //- Login Form
         form#login-form(action="/login" method="POST")
           label Email:
-          input(type="text" name="email" required)
+          input(type="text" name="email" required placeholder="Enter your email")
           br
           label Password:
-          input(type="password" name="password" required)
+          input(type="password" name="password" required placeholder="Enter your password")
+          br
           br
           button(type="submit") Login
 
@@ -43,19 +83,20 @@ block content
       //- Create Account Form
       form#register-form(action="/create-account" method="POST")
           label First Name:
-          input(type="text" name="first_name" required)
+          input(type="text" name="first_name" required placeholder="Enter your first name")
           br
           label Last Name:
-          input(type="text" name="last_name" required)
+          input(type="text" name="last_name" required placeholder="Enter your last name")
           br
           label Email:
-          input(type="email" name="email" required)
+          input(type="email" name="email" required placeholder="Enter your email")
           br
           label Phone Number:
-          input(type="text" name="phone_number" required)
+          input(type="text" name="phone_number" required placeholder="Enter your phone num")
           br
           label Password:
-          input(type="password" name="password" required)
+          input(type="password" name="password" required placeholder="Enter your password")
+          br
           br
           button(type="submit") Create Account
 

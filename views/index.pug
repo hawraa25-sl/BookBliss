@@ -17,7 +17,7 @@ html(lang="en")
 		//- This is gonna be common across all pages
 		nav.navbar
 			.logo
-				h2 Sada Al-Horof
+				h2 Book Bliss
 			.navmenu
 				.search-box
 					input(type="search" class="search" placeholder="Search here...")
@@ -35,9 +35,12 @@ html(lang="en")
 						li
 							a(href="/account")= user.first_name
 						a(href="/logout") Logout
-						
+					 
+					i.bx.bx-cart  
+					i.bx.bxs-cart  
 				#nav-account-icon(onclick="window.location.href='/account'")
 					i.bx.bxs-user
+
 					
 		block content
 

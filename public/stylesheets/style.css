@@ -114,6 +114,12 @@ section{
 .cat-header h2{
     font-size: 38px;
     padding-bottom: 14px;
+    color: #10839dbb;;
+}
+.cat-header p{
+    color:#39aec9cd; 
+
+
 }
 .cat-books{
 display: flex;
@@ -129,7 +135,7 @@ margin-top: 20px;
     height: auto;
     padding: 20px 30px;
     position: relative;
-    color: black;
+   color: rgb(79, 102, 102);
 }
 
 .cat-books .category-item:hover {
@@ -141,7 +147,7 @@ margin-top: 20px;
     background-color: white;
     padding : 18px;
     border-radius: 50%;
-    width: 100px;
+    width: 120px;
     height: 100px;
     text-align: center;
     position: relative ;
@@ -305,8 +311,8 @@ color: #000;
     
 }
 .contact-row form input[type="submit"]:hover{
-border: 1px solid #0b910b;
-color: #0b910b;
+border: 1px solid  #10839dbb;
+color:   #10839dbb;
 background: #fff;
 }
 .contact-row .col img{
@@ -317,6 +323,13 @@ background: #fff;
 .contact-row form h2{
 font-size: 24px;
 font-weight: 600;
+ 
+}
+h2{
+    color: #10839dbb;
+}
+input::placeholder{
+    color: #10839dbb;;
 }
 .footer{
     background: #fff;
@@ -324,6 +337,10 @@ font-weight: 600;
     text-align: center;
     font-size: 20px;
 }
+/*log in styles*/
+ 
+ 
+ 
 /*Responsive*/
 @media(max-width:1420px){
     .set-row{
@@ -489,11 +506,13 @@ font-weight: 600;
     padding: 15px;
     margin-right: 20px;
     border-radius: 100%;
-    background-color: rgba(0,0,0,0.1);
+    
     cursor: pointer;
 }
 
 #nav-account-icon:hover {
-    background-color: black;
+    background-color:   #41afc8bb; 
     transition: 200ms;
 }
+/*categoryies*/
+ 

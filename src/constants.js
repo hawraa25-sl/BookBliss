@@ -1,7 +1,7 @@
 module.exports.categoryList = [
     {
         id: 'personal-finance',
-        name: 'Personal Finance',
+        name: 'Finance',
         description: 'Take control of your financial future with our personal finance book collection!',
         image: '/images/Finance.jpg'
     },
@@ -15,13 +15,19 @@ module.exports.categoryList = [
         id: 'romance',
         name: 'Romance',
         description: 'Fall in love with reading through our enchanting romance book collection!',
-        image: '/images/romance2.jpg'
+        image: '/images/love1jpg.jpg'
     },
     {
         id: 'self-help',
-        name: 'Self Help',
+        name: 'SelfHelp',
         description: 'Transform your life with our self-help collection!',
         image: '/images/selfHelp.jpg'
+    },
+    {
+        id: 'Fiction',
+        name: 'Fiction',
+        description: 'Explore the darkest corners of imagination with our horror collection!',
+        image: '/images/Fiction.jpg'
     },
     {
         id: 'horror',
