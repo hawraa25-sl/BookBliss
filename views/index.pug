@@ -34,10 +34,11 @@ html(lang="en")
 					if user
 						li
 							a(href="/account")= user.first_name
-						a(href="/logout") Logout
-						
-				#nav-account-icon(onclick="window.location.href='/account'")
-					i.bx.bxs-user
+					else
+						li
+							a(href="/account") Login
+				//- #nav-account-icon(onclick="window.location.href='/account'")
+				//- 	i.bx.bxs-user
 					
 		block content
 
