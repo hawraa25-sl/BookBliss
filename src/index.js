@@ -5,9 +5,6 @@ const app = express()
 const port = 3000
 
 const config = require('./config.json');
-const bookRoutes = require('./routes/bookRoutes');
-const searchRouter = require('./routes/search');
-const categoryRoutes = require('./routes/categoryRoutes');
 const { categoryList } = require('./constants');
 
 app.use(express.urlencoded({ extended: false }));
@@ -15,9 +12,10 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
-app.use('/category', categoryRoutes);
-app.use('/search', searchRouter);
-app.use('/book', bookRoutes);
+
+app.use('/category', require('./routes/categoryRoutes'));
+app.use('/search', require('./routes/searchRoutes'));
+app.use('/book', require('./routes/bookRoutes'));
 
 // MySQL connection
 const connection = mysql.createConnection(config.databaseUrl);
