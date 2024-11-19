@@ -19,7 +19,7 @@
 }
 
 .navbar h2{
-    color :#ffff;
+    color :#fff;
     font-size:25px;
     font-weight: 500;
     padding: 0px 20px;
@@ -94,7 +94,7 @@ justify-content: space-around;
 }
 .main-header .btn:hover{
     color: #10839dbb;
-    background: #fff;
+    background:  #ffffff40;
 }
 .main-header img{
     width: 560px;
@@ -114,7 +114,7 @@ section{
 .cat-header h2{
     font-size: 38px;
     padding-bottom: 14px;
-    color: #10839dbb;;
+    color: #39aec9cd;
 }
 .cat-header p{
     color:#39aec9cd; 

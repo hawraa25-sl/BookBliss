@@ -23,5 +23,17 @@ router.get('/:categoryName', (req, res) => {
         }
     });
 });
+// app.get('/genre', (req, res) => {
+//     console.log("Category route hit!");  // Debugging log to confirm the route is being hit
+
+//     const genres = [
+//         { genreName: "Fiction", description: "Description for fiction" },
+//         { genreName: "Romance", description: "Description for romance" }
+//     ];
+
+//     res.render('category', { genres: genres });
+// });
+
+
 
 module.exports = router;
