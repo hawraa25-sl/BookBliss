@@ -4,7 +4,9 @@ const mysql = require("mysql2")
 const app = express()
 const port = 3000
 
-const config = require('./config');
+const config = require('./config.json');
+const bookRoutes = require('./routes/bookRoutes');
+const searchRouter = require('./routes/search');
 const categoryRoutes = require('./routes/categoryRoutes');
 const { categoryList } = require('./constants');
 
@@ -13,8 +15,9 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
-
 app.use('/category', categoryRoutes);
+app.use('/search', searchRouter);
+app.use('/book', bookRoutes);
 
 // MySQL connection
 const connection = mysql.createConnection(config.databaseUrl);
@@ -134,11 +137,6 @@ app.get('/logout', (req, res) => {
 });
 
 
-// app.post('/add-to-cart', (req, res) => {
-
-// })
-
-
 app.get('/admin', (req, res) => {
   res.send("This is the admin page<br>Under construction")
 })
@@ -147,7 +145,6 @@ app.get('/*', (req, res) => {
   res.redirect('/')
 })
 
-// app.get('/books')
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })

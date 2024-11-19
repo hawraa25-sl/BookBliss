@@ -26,12 +26,28 @@ INSERT INTO books (title, author, genre, isbn, price, stock, published_date, des
 (11, '12 Rules for Life: An Antidote to Chaos', 'Jordan B. Peterson', 'SelfHelp', '978-0345816023', 25.99, 15, '2018-01-16', '12 Rules for Life provides profound advice to help readers live a meaningful life. Dr. Jordan B. Peterson draws on psychology, philosophy, and personal anecdotes to explore themes of responsibility, discipline, and order in a chaotic world.', ' https://m.media-amazon.com/images/I/71PXmc5BgAL._AC_UY327_FMwebp_QL65_.jpg'); 
 (12, 'Dont Believe Everything You Think: Why Your Thinking Is The Beginning & End Of Suffering', 'Joseph Nguyen','SelfHelp', '978-1737542307', 19.92, 15, '2021-03-04', 'Joseph Nguyen explores how our thoughts create suffering and prevent us from living a fulfilled life. By understanding how to transcend the mind and its patterns of overthinking, readers are guided toward inner peace and a deeper sense of well-being. This book focuses on changing the way you perceive thoughts, helping you disconnect from them and ultimately free yourself from unnecessary stress and worry.', 'https://m.media-amazon.comimagesI/51xKFo2B+RL._AC_UY327_FMwebp_QL65_.jpg');
 
- 
-
- 
-
- 
- 
-
 INSERT INTO books (title, author, genre, isbn, price, stock, published_date, description, cover_image_url) VALUES
 ('The Art of Mindfulness', 'Sarah Chen', 'SelfHelp', '978-1234567890', 24.99, 50, '2023-01-15', 'A comprehensive guide to mindful living','images/the_art_of_mindfulness.png');
+
+
+-- First add some users
+INSERT INTO users (username, email, password_hash) VALUES
+('bookworm123', 'bookworm@email.com', SHA2('pass123', 256)),
+('readinglover', 'reader@email.com', SHA2('pass456', 256)),
+('literaryfan', 'literary@email.com', SHA2('pass789', 256));
+
+-- Add reviews for psychology books
+INSERT INTO reviews (book_id, customer_id, rating, review_text, review_date) VALUES
+(1, 1, 5, 'Excellent introduction to psychology. Bloom explains complex concepts clearly.', '2024-01-15'),
+(1, 2, 4, 'Very insightful read, though some parts were quite academic.', '2024-02-01'),
+(2, 1, 5, 'Kahneman brilliantly explains how we think. Changed my perspective.', '2024-01-20'),
+(3, 3, 4, 'Great insights into persuasion psychology. Very practical applications.', '2024-02-10'),
+(4, 2, 5, 'Profound and moving. A must-read for everyone.', '2024-01-25');
+
+-- Add reviews for self-help books
+INSERT INTO reviews (book_id, customer_id, rating, review_text, review_date) VALUES
+(7, 1, 5, 'Life-changing book on habit formation. Clear's writing is excellent.', '2024-02-05'),
+(8, 2, 4, 'Brown's take on vulnerability is eye-opening.', '2024-01-30'),
+(9, 3, 5, 'Powerful insights into self-sabotage. Very relatable content.', '2024-02-15'),
+(10, 1, 3, 'Good concepts but the 5 AM wake-up is challenging to maintain.', '2024-01-10'),
+(11, 2, 4, 'Peterson provides practical wisdom for modern life.', '2024-02-20');

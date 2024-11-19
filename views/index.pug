@@ -1,57 +1,70 @@
-//- index shows up in more than one page
-
+//- index.pug
 html(lang="en")
-	head
-		meta(charset="UTF-8")
-		meta(name="viewport" content="width=device-width, initial-scale=1.0")
-		title online Book store | HTML CSS 
-		link(rel="stylesheet" href="/stylesheets/style.css")
-		link(rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css")
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport" content="width=device-width, initial-scale=1.0")
+        title Book Bliss | A space for people to escap
+        link(rel="stylesheet" href="/stylesheets/style.css")
+        link(rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css")
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
 
-		block styles
+        block styles
 
-	body
-		//- This is gonna be common across all pages
-		nav.navbar
-			.logo
-				h2 Book Bliss
-			.navmenu
-				.search-box
-					input(type="search" class="search" placeholder="Search here...")
-					i.bx.bx-search
-				ul
-					li
-						a(href="/") Home
-					li
-						a(href="#categories") Categories
-					li
-						a(href="#about") About
-					li
-						a(href="#contactus") Contact US
-					if user
-						li
-							a(href="/account")= user.first_name
-						a(href="/logout") Logout
-					 
-					i.bx.bx-cart  
-					i.bx.bxs-cart  
-				#nav-account-icon(onclick="window.location.href='/account'")
-					i.bx.bxs-user
+    body
+        //- Navbar with updated search form
+        nav.navbar
+            .logo
+                h2 Book Bliss
+            .navmenu
+                .search-box
+                    form(action="/search" method="GET" class="search-form")
+                        input(type="search" name="q" class="search" placeholder="Search books by title, author, description or genre..." required)
+                        button(type="submit" class="search-button")
+                            i.bx.bx-search
+                ul
+                    li
+                        a(href="/") Home
+                    li
+                        a(href="/#categories") Categories
+                    li
+                        a(href="/#about") About
+                    li
+                        a(href="/#contactus") Contact US
+                    if user
+                        li
+                            a(href="/account")= user.first_name
+                        a(href="/logout") Logout
+                    
+                    i.bx.bx-cart
+                    i.bx.bxs-cart
+                #nav-account-icon(onclick="window.location.href='/account'")
+                    i.bx.bxs-user
 
-					
-		block content
+        block content
 
-		//- Footer Also gonna be common
-		.footer
-			.footer
-				p @2024 All Rights Reserved By Free Online Book Shop
+        //- Footer
+        .footer
+            .footer
+                p @2024 All Rights Reserved By Free Online Book Shop
 
-		//- Custom Script
-		script(src="script.js")
+        //- Scripts
+        script.
+            // Add instant search functionality (optional)
+            document.querySelector('.search').addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    e.target.closest('form').submit();
+                }
+            });
 
-		//- Add these at the bottom of your Pug template (usually before closing body tag)
-		//-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+            // Prevent empty searches
+            document.querySelector('.search-form').addEventListener('submit', function(e) {
+                const searchInput = this.querySelector('.search');
+                if (!searchInput.value.trim()) {
+                    e.preventDefault();
+                }
+            });
+
+        script(src="/javascripts/script.js")
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>

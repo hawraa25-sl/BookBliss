@@ -80,7 +80,7 @@ block styles
             margin: 2rem 0 1rem;
             font-size: 2rem;
        }
-       .catehory-description{
+       .category-description{
            text-align: center;
             color: #718096;
             max-width: 800px;
@@ -89,16 +89,11 @@ block styles
             line-height: 1.6;
 
        }
-  
-            
-            
-
-
 
 block content
     section(id="books")
         h2(id="category")= categoryName
-        p.category-description= description
+        h2.category-description= categoryDescription
         .book-listing                                    
             each book in books
                 .book-card

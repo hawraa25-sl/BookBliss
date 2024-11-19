@@ -1,0 +1,201 @@
+extends index
+
+block content
+  section#book-details
+    .book-container
+      .book-image
+        if book.cover_image_url
+          img(src=book.cover_image_url, alt=book.title)
+        else
+          img(src="/images/default-book.png", alt="Default book cover")
+      .book-info
+        h1= book.title
+        p.author Author: #{book.author}
+        p.category Category: #{book.genre}
+        p.price $#{book.price}
+        p.description= book.description
+        if book.stock > 0
+          button.btn-add-cart(onclick=`addToCart(${book.id})`) Add to Cart
+        else
+          button.btn-out-stock(disabled) Out of Stock
+        a.btn-back(href="javascript:history.back()") Back to List
+
+    .reviews-section
+      h2 Customer Reviews
+      if reviews && reviews.length > 0
+        .reviews-container
+          each review in reviews
+            .review-card
+              .review-header
+                .reviewer-info
+                  span.customer_name= review.reviewer_name
+                  span.review-date= new Date(review.review_date).toLocaleDateString()
+                .rating
+                  - var stars = review.rating
+                  while stars > 0
+                    span.star ★
+                    - stars--
+              .review-content
+                p= review.review_text
+      else
+        p.no-reviews No reviews yet for this book.
+
+block styles
+  style.
+    #book-details {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+
+    .book-container {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .book-image img {
+      width: 100%;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+    }
+
+    .book-info {
+      padding: 1rem;
+    }
+
+    .book-info h1 {
+      color: #2c3e50;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .book-info p {
+      margin: 0.5rem 0;
+      font-size: 1.1rem;
+    }
+
+    .author, .category {
+      color: #666;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      color: #e74c3c;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+
+    .description {
+      line-height: 1.6;
+      margin: 1.5rem 0;
+    }
+
+    .btn-add-cart, .btn-out-stock, .btn-back {
+      padding: 0.8rem 1.5rem;
+      border-radius: 4px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-right: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-add-cart {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .btn-add-cart:hover {
+      background: #27ae60;
+    }
+
+    .btn-out-stock {
+      background: #95a5a6;
+      color: white;
+      cursor: not-allowed;
+    }
+
+    .btn-back {
+      background: #3498db;
+      color: white;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-back:hover {
+      background: #2980b9;
+    }
+
+    .reviews-section {
+      margin-top: 3rem;
+    }
+
+    .reviews-section h2 {
+      color: #2c3e50;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+    }
+
+    .reviews-container {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .review-card {
+      background: white;
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .reviewer-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .customer_name {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+
+    .review-date {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+
+    .rating {
+      color: #f1c40f;
+      font-size: 1.2rem;
+    }
+
+    .review-content {
+      color: #34495e;
+      line-height: 1.6;
+    }
+
+    .no-reviews {
+      color: #7f8c8d;
+      text-align: center;
+      padding: 2rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .book-container {
+        grid-template-columns: 1fr;
+      }
+
+      .book-image {
+        max-width: 300px;
+        margin: 0 auto;
+      }
+    }
