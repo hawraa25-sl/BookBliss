@@ -1,4 +1,5 @@
-CREATE DATABASE IF NOT EXISTS bookbliss;
+DROP SCHEMA bookbliss;
+CREATE DATABASE bookbliss;
 USE bookbliss;
 
 DROP TABLE IF EXISTS `customers`;
