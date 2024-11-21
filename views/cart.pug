@@ -1,0 +1,8 @@
+extends index
+
+block content
+  h1 This is your cart!
+  p= JSON.stringify(cart)
+  p= JSON.stringify(items)  
+  for item in items
+    h2= item.title

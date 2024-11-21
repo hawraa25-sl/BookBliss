@@ -14,10 +14,13 @@ block content
         p.category Category: #{book.genre}
         p.price $#{book.price}
         p.description= book.description
-        if book.stock > 0
-          button.btn-add-cart(onclick=`addToCart(${book.id})`) Add to Cart
-        else
-          button.btn-out-stock(disabled) Out of Stock
+        if user
+          if book.stock > 0
+              form(action="/cart/add" method="POST" style="display: inline")
+                input(type="hidden" name="book_id" value=book.book_id)
+                button.btn-add-cart Add to Cart
+          else
+            button.btn-out-stock(disabled) Out of Stock
         a.btn-back(href="javascript:history.back()") Back to List
 
     .reviews-section

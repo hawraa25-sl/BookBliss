@@ -63,6 +63,9 @@ block styles
 block content
     if user
       h1 Hello, #{user.first_name}!
+      ul 
+        li
+          a(href="/logout") Logout
 
     else
       h2 Login

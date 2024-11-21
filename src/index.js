@@ -1,10 +1,8 @@
 const express = require('express')
 const session = require('express-session');
-const mysql = require("mysql2")
 const app = express()
 const port = 3000
 
-const config = require('./config.json');
 const { categoryList } = require('./constants');
 
 app.use(express.urlencoded({ extended: false }));
@@ -12,21 +10,6 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
-
-app.use('/category', require('./routes/categoryRoutes'));
-app.use('/search', require('./routes/searchRoutes'));
-app.use('/book', require('./routes/bookRoutes'));
-
-// MySQL connection
-const connection = mysql.createConnection(config.databaseUrl);
-
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to the database:', err);
-    return;
-  }
-  console.log('Connected to MySQL database');
-});
 
 // Set up session middleware
 app.use(session({
@@ -44,6 +27,13 @@ app.use(function (req, res, next) {
   }
   next();
 });
+
+app.use('/category', require('./routes/categoryRoutes'));
+app.use('/search', require('./routes/searchRoutes'));
+app.use('/book', require('./routes/bookRoutes'));
+app.use('/cart', require('./routes/cart'));
+
+const connection = require('./database')
 
 // home
 app.get('/', (req, res) => {

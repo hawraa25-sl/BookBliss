@@ -29,7 +29,7 @@ html(lang="en")
                         input(type="search" name="q" class="search" placeholder="Search books by title, author, description or genre..." required)
                         button(type="submit" class="search-button")
                             i.bx.bx-search
-                ul
+                ul.nav-actions
                     li
                         a(href="/") Home
                     li
@@ -41,12 +41,13 @@ html(lang="en")
                     if user
                         li
                             a(href="/account")= user.first_name
-                        a(href="/logout") Logout
-                    
-                    i.bx.bx-cart
-                    i.bx.bxs-cart
-                #nav-account-icon(onclick="window.location.href='/account'")
-                    i.bx.bxs-user
+                        li
+                            a(href="/cart") Cart
+                            //- i.bx.bxs-cart
+                    else
+                        li
+                            a(href="/account") My Account
+
 
         block content
 
@@ -74,7 +75,7 @@ html(lang="en")
                     .col-6.col-lg-3
                         h4 Social Media Links
                     .footerBottom
-                        p p @2024 All Rights Reserved By Free Online Book Shop
+                        p @2024 All Rights Reserved By Free Online Book Shop
 
 
         //- Scripts
