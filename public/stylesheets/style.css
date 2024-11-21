@@ -117,7 +117,7 @@ section{
     color: #39aec9cd;
 }
 .cat-header p{
-    color:#39aec9cd; 
+    color: black;
 
 
 }
@@ -154,7 +154,7 @@ margin-top: 20px;
     left: 20px;
 }
 .cat-books .category-item img{
-    width: 129%;
+    width: 130%;
 
 }
 .cat-books .category-item h4{
@@ -185,13 +185,13 @@ margin-top: 20px;
     margin: auto;
 }
 .set-row img{
-    width: 680px;
+    width: 500px;
     height: auto;
 }
 #about{
     background: #e7f0f3ac;
     width: 100%;
-    padding: 80px 0px;
+    padding: 60px 0px;
 }
 .set-row .about-content{
     padding-left: 30px;
@@ -206,8 +206,8 @@ font-size: 18px;
 line-height: 24px;
 }
 .set-row .about-content .btn2{
-    background: #0b910b;
-    border: 1px solid #0b910b;
+    background:  #10839dbb;
+    border: 1px solid   #10839dbb;
     font-size: 24px;
     color:#fff;
     font-weight: 400;
@@ -219,7 +219,7 @@ line-height: 24px;
 }
 .set-row .about-content .btn2:hover{
     background: #dccfcf;
-    color: #0b910b;
+    color:  #3aabc59c;
 }
 /*----blog----*/
 .blog-header{
@@ -286,9 +286,9 @@ padding: 40px 0 ;
     width: 450px;
     padding: 12px 0px;
 }
-.contact-row form input, textarea{
+.contact-row form input  {
     width: 100%;
-    height: 40px;
+    height: 39px;
     margin-top: 20px;
     padding: 6px 0 ;
     text-indent:10px ;
@@ -296,24 +296,40 @@ padding: 40px 0 ;
     background-color: #e7f0f3ac;
 
 }
+h3{
+    color: #137990a1; ;
+}
+textarea{
+    width: 100%;
+    height: 39px;
+    margin-top: 20px;
+    padding: 6px 0 ;
+    text-indent:10px ;
+    font-size: 18px;
+    background-color: #e7f0f3ac;
+    height: 60px;
+}
 .contact-row form input::placeholder,
 textarea::placeholder{
 color: #000;
 }
-.contact-row form input[type="submit"]:hover{
+button{
     text-align: center;
     height: 50px;
+    width: 100%;
     cursor: pointer;
-    background-color: #0b910b;
+    background-color:  #157e96bb;
     border: none;
     border-radius: 10px;
     outline:none;
+
     
 }
-.contact-row form input[type="submit"]:hover{
-border: 1px solid  #10839dbb;
+ 
+button:hover{
+    border: 1px solid  #10839dbb;
 color:   #10839dbb;
-background: #fff;
+background:  #63a7b5bb;
 }
 .contact-row .col img{
     width: 530px;
@@ -323,10 +339,15 @@ background: #fff;
 .contact-row form h2{
 font-size: 24px;
 font-weight: 600;
- 
 }
+
 h2{
-    color: #10839dbb;
+    color:  #10839dbb;;
+    padding: 20px;
+margin-top: 14px;
+}
+p{
+  color:  #060606bb;
 }
 input::placeholder{
     color: #10839dbb;;
