@@ -1,0 +1,45 @@
+.form-container {
+    display: flex;
+    justify-content: space-around;
+    font-size: 15px;
+    width: 1000px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+}
+
+input {
+    cursor: pointer;
+    text-align: center;
+    height: 35px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+button {
+    cursor: pointer;
+    border: none;
+    border-radius: 18px;
+    background-color: #10839dbb;
+    width: 50%;
+    height: 40px;
+}
+
+label {
+    color: #10839dbb;
+}
+
+h2 {
+    padding: 16px;
+    color: #10839dbb;
+}
+
+button:hover {
+    color: #10839dbb;
+    transform: scale(1.2);
+    transition: 1s;
+
+}
+
+.error-message {
+    color: red
+}

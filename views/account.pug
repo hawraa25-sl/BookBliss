@@ -1,76 +1,52 @@
 extends index
 
-block styles
-    title Login or Create Account
-    style.
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        //- height: 100vh;
-        flex-direction: column;
-      }
-
-      .form-container {
-        margin-top: 10px;
-        display:flex;
-        justify-content: space-between;
-        gap:40px;
-        font-size:15px;
-      }
-       .form-container form{
-        padding:  
-       
-       }
-       input {
-        cursor : pointer;
-        text-align :center;
-        height:35px;
-        width:100%;
-        border-radius:8px;
-       background-color:       
-           outline:;
-
-       }
-     button{
-      cursor:pointer;
-      border : none;
-      border-radius:18px;
-          background-color:     #10839dbb; 
-          width:50%;
-          height:40px;
-     }
-     label{
-      color :    #10839dbb; 
-     }
-     h2{
-      padding:16px;
-      color  :  #10839dbb; 
-     }
-     button:hover{
-      color:  #10839dbb; 
-       transform: scale(1.2);
-       transition:1s;
-     
-     }
-
-      .error-message {
-        color: red
-      }
-
+block head-ext
+  title Login or Create Account
+  style
+    include styles/account.css
 
 block content
-    if user
-      h1 Hello, #{user.first_name}!
-      ul 
-        li
-          a(href="/logout") Logout
+  if user
+    h1 Hello, #{user.first_name}!
+    // Address Management Form
+    .address-management
+      h2 Manage Your Address
+      form(action="/user/address" method="POST")
+        // Address Line 1
+        label(for="address1") Address Line 1:
+        input#address1(type="text" name="address1" value=user.address1 placeholder="Enter your address" required)
 
-    else
-      h2 Login
+        // Address Line 2 (Optional)
+        label(for="address2") Address Line 2:
+        input#address2(type="text" name="address2" value=user.address2 placeholder="Apartment, suite, unit, etc.")
+  
+        // City
+        label(for="city") City:
+        input#city(type="text" name="city" value=user.city placeholder="Enter your city" required)
 
-      .form-container
+        // State
+        label(for="state") State:
+        input#state(type="text" name="state" value=user.state placeholder="Enter your state" required)
+
+        // ZIP Code
+        label(for="zip") ZIP Code:
+        input#zip(type="text" name="zip" value=user.zip placeholder="Enter your ZIP code" required)
+
+        // Country
+        label(for="country") Country:
+        input#country(type="text" name="country" value=user.country placeholder="Enter your country" required)
+
+        // Submit Button
+        button.btn-submit(type="submit") Save Address
+    ul 
+      li
+        a(href="/logout") Logout
+
+  else
+    .form-container
+      div
+        h2 Login
+
         //- Login Form
         form#login-form(action="/login" method="POST")
           label Email:
@@ -84,10 +60,11 @@ block content
           br
 
 
-      h2 Create Account
+      div
+        h2 Create Account
 
-      //- Create Account Form
-      form#register-form(action="/create-account" method="POST")
+        //- Create Account Form
+        form#register-form(action="/create-account" method="POST")
           label First Name:
           input(type="text" name="first_name" required placeholder="Enter your first name")
           br
@@ -106,5 +83,5 @@ block content
           br
           button(type="submit") Create Account
 
-      if error
-        p.error-message= error
+    if error
+      p.error-message= error

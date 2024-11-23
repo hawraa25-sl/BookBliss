@@ -1,0 +1,159 @@
+#book-details {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+
+  .book-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .book-image img {
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+
+  .book-info {
+    padding: 1rem;
+  }
+
+  .book-info h1 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  .book-info p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+
+  .author, .category {
+    color: #666;
+  }
+
+  .price {
+    font-size: 1.5rem;
+    color: #e74c3c;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+
+  .description {
+    line-height: 1.6;
+    margin: 1.5rem 0;
+  }
+
+  .btn-add-cart, .btn-out-stock, .btn-back {
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-right: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-add-cart {
+    background:  #10839dbb;
+    color: white;
+    width:40%;
+  }
+
+  .btn-add-cart:hover {
+    background:    #3aabc59c;
+  }
+
+  .btn-out-stock {
+    background:  #10839dbb;
+    color: white;
+    cursor: not-allowed;
+  }
+
+  .btn-back {
+    background:  #10839dbb;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    width: ;
+  }
+
+  .btn-back:hover {
+    background:   #3aabc59c;
+  }
+
+  .reviews-section {
+    margin-top: 3rem;
+  }
+
+  .reviews-section h2 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+  }
+
+  .reviews-container {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .review-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+
+  .reviewer-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .customer_name {
+    font-weight: bold;
+    color: #2c3e50;
+  }
+
+  .review-date {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+  }
+
+  .rating {
+    color: #f1c40f;
+    font-size: 1.2rem;
+  }
+
+  .review-content {
+    color: #34495e;
+    line-height: 1.6;
+  }
+
+  .no-reviews {
+    color: #7f8c8d;
+    text-align: center;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .book-container {
+      grid-template-columns: 1fr;
+    }
+
+    .book-image {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }

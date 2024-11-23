@@ -1,0 +1,62 @@
+extends index
+
+block head-ext
+  style
+    include styles/checkout.css
+
+block content
+  .checkout-container
+    h1 Checkout
+
+    // Small Cart Details Section
+    .cart-summary
+      //- h2 Cart Summary
+      ul
+        each item in cart.items
+          li.cart-item
+            .item-details
+              span.item-name= item.title
+              span.item-quantity x #{item.quantity}
+              span.item-subtotal $#{(item.price * item.quantity).toFixed(2)}
+      .cart-total
+        h3 Total: $#{cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+
+    form(action="/checkout/submit" method="POST")
+      // Personal Details Section
+      .form-section
+        h2 Personal Details
+        label(for="name") Name:
+        input#name(type="text" name="name" placeholder="Enter your name" required value=`${user.first_name} ${user.last_name}`)
+        label(for="email") Email:
+        input#email(type="email" name="email" placeholder="Enter your email" required value=user.email)
+
+      // Address Section
+      .form-section
+        h2 Shipping Address
+        label(for="address") Address:
+        input#address(type="text" name="address" placeholder="Enter your address" required value="Sunset Apartments")
+        label(for="city") City:
+        input#city(type="text" name="city" placeholder="Enter your city" required)
+        label(for="state") State:
+        input#state(type="text" name="state" placeholder="Enter your state" required)
+        label(for="zip") ZIP Code:
+        input#zip(type="text" name="zip" placeholder="Enter your ZIP code" required)
+
+      // Payment Options Section
+      .form-section
+        h2 Payment Options
+        label
+          input(type="radio" name="payment_method" value="cash" required)
+          | Cash
+        label
+          input(type="radio" name="payment_method" value="card" required)
+          | Card
+        label
+          input(type="radio" name="payment_method" value="giftcard" required)
+          | Gift Card
+
+      // Submit Button
+      button.btn-submit(type="submit") Place Order
+
+    // Optional: Back to Cart Button
+    a.btn-back(href="/cart") Back to Cart

@@ -32,7 +32,8 @@ app.use('/category', require('./routes/categoryRoutes'));
 app.use('/search', require('./routes/searchRoutes'));
 app.use('/book', require('./routes/bookRoutes'));
 app.use('/cart', require('./routes/cart'));
- 
+app.use('/checkout', require('./routes/checkout'));
+
 
 const connection = require('./database')
 

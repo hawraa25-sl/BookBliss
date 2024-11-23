@@ -1,67 +1,20 @@
 const express = require('express');
 const router = express.Router();
 
-const connection = require('../database')
+const connection = require('../database');
+const getCart = require('../getCart');
 
 router.get('/', async (req, res) => {
     const customerId = req.session?.user?.customer_id; // Assuming customer_id is stored in session
 
-
     if (!customerId) {
-        return res.status(400).send('You need to be logged in to view the cart');
+        return res.redirect('/account')
     }
 
     try {
-        const cartDetails = await new Promise((resolve, reject) => {
-            const query = `
-                SELECT 
-                    c.cart_id,
-                    ci.cart_item_id,
-                    b.book_id,
-                    b.title,
-                    b.author,
-                    b.genre,
-                    b.price AS book_price,
-                    b.cover_image_url,
-                    ci.quantity,
-                    ci.price AS item_price
-                FROM carts c
-                INNER JOIN cart_items ci ON c.cart_id = ci.cart_id
-                INNER JOIN books b ON ci.book_id = b.book_id
-                WHERE c.customer_id = ?`;
-
-            connection.query(query, [customerId], (err, rows) => {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(rows);
-            });
-        });
-
-        // Check if the cart is empty
-        if (cartDetails.length === 0) {
-            return res.render('cart', { cart: null, items: [] });
-        }
-
-        // Extract cart information and items
-        const cart = {
-            cart_id: cartDetails[0].cart_id, // Assuming all items belong to the same cart
-        };
-
-        const items = cartDetails.map(item => ({
-            cart_item_id: item.cart_item_id,
-            book_id: item.book_id,
-            title: item.title,
-            author: item.author,
-            genre: item.genre,
-            price: item.book_price,
-            cover_image_url: item.cover_image_url,
-            quantity: item.quantity,
-            total_price: item.item_price, // Item price is pre-calculated in cart_items
-        }));
-
-        // Render the cart page with the cart and items
-        res.render('cart', { cart, items });
+        const cart = await getCart(customerId)
+        console.log(cart)
+        res.render('cart', { cart });
     } catch (error) {
         console.error(error);
         res.status(500).send('An error occurred while fetching the cart');
@@ -74,9 +27,9 @@ router.post('/add', async (req, res) => {
     const customerId = req.session?.user?.customer_id; // Assuming customer_id is stored in session
 
     console.log(bookId)
- 
+
     if (!customerId) {
-        return res.status(400).send('You need to be logged in to add items to your cart');
+        return res.redirect('/account')
     }
 
     let carts;
@@ -142,7 +95,7 @@ router.post('/add', async (req, res) => {
                     resolve(rows);
                 });
             });
-            
+
             console.log(book)
 
             if (book.length > 0) {
@@ -168,51 +121,5 @@ router.post('/add', async (req, res) => {
         return res.status(500).send();
     }
 });
-// Routes
-// app.post('/cart', (req, res) => {
-//     const { itemId, quantity } = req.body;
-//     const item = items.find(item => item.cart_item_id === itemId);
 
-//     if (!item) {
-//         return res.status(400).json({ error: 'Item not found.' });
-//     }
-
-//     // Update the cart with the item and quantity
-//     const existingItem = cart.find(cartItem => cartItem.cart_item_id === itemId);
-//     if (existingItem) {
-//         existingItem.quantity += quantity;
-//     } else {
-//         cart.push({ ...item, quantity });
-//     }
-
-//     res.redirect('/cart');  // Redirect to the cart page after adding the item
-// });
-
-// // Update cart item quantity (for example, from a form submission)
-// app.post('/cart/update', (req, res) => {
-//     const { cart_item_id, quantity } = req.body;
-    
-//     const item = cart.find(item => item.cart_item_id === cart_item_id);
-//     if (item) {
-//         item.quantity = quantity;
-//     }
-
-//     res.redirect('/cart');  // Redirect to cart after updating
-// });
-
-// // Cart page route
-// app.get('/cart', (req, res) => {
-//     res.render('cart', { cart, items });
-// });
-
-// // Checkout route (if needed)
-// app.post('/checkout', (req, res) => {
-//     res.send('Checkout process initiated');
-// });
-
-// // Start server
-// app.listen(3000, () => {
-//     console.log('Server is running on port 3000');
-// });
-
- module.exports = router;
+module.exports = router;
