@@ -1,8 +1,38 @@
 extends index
 
+//- block content
+//-   h1 This is your cart!
+//-   p= JSON.stringify(cart)
+//-   p= JSON.stringify(items)  
+//-   for item in items
+//-     h2= item.title
 block content
-  h1 This is your cart!
-  p= JSON.stringify(cart)
-  p= JSON.stringify(items)  
-  for item in items
-    h2= item.title
+  section#cart-details
+    if cart && items.length > 0
+      .cart-container
+        each item in items
+          .cart-item
+            .cart-image
+              if item.cover_image_url
+                img(src=item.cover_image_url, alt=item.title)
+              else
+                img(src="/images/default-book.png", alt="Default book cover")
+            .cart-info
+              h2= item.title
+              p.author Author: #{item.author}
+              p.category Category: #{item.genre}
+              p.price Price: $#{item.price ? item.price.toFixed(2) : '0.00'}
+              form(action="/cart/update" method="POST")
+                input(type="hidden" name="cart_item_id" value=item.cart_item_id)
+                label(for="quantity") Quantity:
+                input#quantity(type="number" name="quantity" value=item.quantity min="1" required)
+                button.btn-update Update Quantity
+              p.subtotal Subtotal: $#{(item.price * item.quantity).toFixed(2)}
+        .cart-total
+          h3 Total: $#{items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
+        form(action="/checkout" method="POST")
+          button.btn-checkout Checkout
+    else
+      .empty-cart
+        p Your cart is empty.
+        a.btn-back(href="/") Back to Home

@@ -11,6 +11,8 @@ block content
 
     //- Categories section
     section#categories
+
+    
         .cat-row
             .cat-header
                 h2 Book Categories
@@ -22,10 +24,11 @@ block content
                     .book-img
                         img(src=category.image alt=category.name)
                     h4= category.name
+            #categoriess        
 
     section#about
         .set-row
-            img(src="/images/about3.jpg" alt="")
+            img(src="/images/AboutOurjpg.jpg" alt="")
             .about-content
                 h2 About Our Bookstore
                 p  We believe in the magic of books. From gripping novels to self-help gems, our carefully curated collection offers something for everyone. At BookBliss, we’re a community for book lovers, sparking inspiration and joy through the written word.
@@ -58,17 +61,17 @@ block content
           h2 Contact Us
           br
           img(src="/images/contactus.jpg" alt="")
-        .col
-             
-            h2 We would love to hear from you.
+        .col  
+            h3 We would love to hear from you.
             form(action="")
-                input(type="text" placeholder="Name")
+                input(type="text" placeholder="Name" name="name" required)
                 br
-                input(type="text" placeholder="Email")
+                input(type="text" placeholder="Email" name="email" required)
                 br
-                input(type="text" placeholder="Phone Number")
+                input(type="text" placeholder="Phone Number" name="phone")
                 br
-                textarea(cols="20" rows="5" placeholder="Message" id="")
+                br
+                textarea(cols="20" rows="5" placeholder="Message" name="message" required)
                 br
                 br
                 button(type="submit") SEND

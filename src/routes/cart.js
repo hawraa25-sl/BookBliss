@@ -6,6 +6,7 @@ const connection = require('../database')
 router.get('/', async (req, res) => {
     const customerId = req.session?.user?.customer_id; // Assuming customer_id is stored in session
 
+
     if (!customerId) {
         return res.status(400).send('You need to be logged in to view the cart');
     }
@@ -56,7 +57,7 @@ router.get('/', async (req, res) => {
             price: item.book_price,
             cover_image_url: item.cover_image_url,
             quantity: item.quantity,
-            total_price: item.item_price, // Item price is pre-calculated in `cart_items`
+            total_price: item.item_price, // Item price is pre-calculated in cart_items
         }));
 
         // Render the cart page with the cart and items
@@ -167,6 +168,51 @@ router.post('/add', async (req, res) => {
         return res.status(500).send();
     }
 });
+// Routes
+// app.post('/cart', (req, res) => {
+//     const { itemId, quantity } = req.body;
+//     const item = items.find(item => item.cart_item_id === itemId);
 
+//     if (!item) {
+//         return res.status(400).json({ error: 'Item not found.' });
+//     }
 
-module.exports = router;
+//     // Update the cart with the item and quantity
+//     const existingItem = cart.find(cartItem => cartItem.cart_item_id === itemId);
+//     if (existingItem) {
+//         existingItem.quantity += quantity;
+//     } else {
+//         cart.push({ ...item, quantity });
+//     }
+
+//     res.redirect('/cart');  // Redirect to the cart page after adding the item
+// });
+
+// // Update cart item quantity (for example, from a form submission)
+// app.post('/cart/update', (req, res) => {
+//     const { cart_item_id, quantity } = req.body;
+    
+//     const item = cart.find(item => item.cart_item_id === cart_item_id);
+//     if (item) {
+//         item.quantity = quantity;
+//     }
+
+//     res.redirect('/cart');  // Redirect to cart after updating
+// });
+
+// // Cart page route
+// app.get('/cart', (req, res) => {
+//     res.render('cart', { cart, items });
+// });
+
+// // Checkout route (if needed)
+// app.post('/checkout', (req, res) => {
+//     res.send('Checkout process initiated');
+// });
+
+// // Start server
+// app.listen(3000, () => {
+//     console.log('Server is running on port 3000');
+// });
+
+ module.exports = router;
