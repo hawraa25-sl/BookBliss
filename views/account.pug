@@ -11,7 +11,7 @@ block content
     // Address Management Form
     .address-management
       h2 Manage Your Address
-      form(action="/user/address" method="POST")
+      form(action="user/address" method="POST")
         // Address Line 1
         label(for="address1") Address Line 1:
         input#address1(type="text" name="address1" value=user.address1 placeholder="Enter your address" required)

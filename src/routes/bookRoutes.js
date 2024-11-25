@@ -6,7 +6,7 @@ const config = require('../config.json');
 const connection = mysql.createConnection(config.databaseUrl);
 
 
-router.get('/:id', (req, res) => {
+router.get('/', (req, res) => {
     const bookQuery = `
         SELECT books.*
         FROM books 

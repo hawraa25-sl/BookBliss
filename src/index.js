@@ -1,15 +1,23 @@
-const express = require('express')
+const express = require('express');
 const session = require('express-session');
 const app = express()
 const port = 3000
 
 const { categoryList } = require('./constants');
 
-app.use(express.urlencoded({ extended: false }));
+ 
+app.use(express.json());
+// Set the views directory
+app.set('views', ['./views', './views/account']);  // Add './views/account' to search in both directories
 
+// Log the configured views directory
+ 
+
+// Set Pug as the view engine
 app.set('views', './views');
 app.set('view engine', 'pug')
 app.use(express.static('public'));
+console.log('Configured Views Directory:', app.get('views'));
 
 // Set up session middleware
 app.use(session({
@@ -17,6 +25,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
+
 
 app.use(function (req, res, next) {
   var _render = res.render;
@@ -27,12 +38,20 @@ app.use(function (req, res, next) {
   }
   next();
 });
+// Middleware to log the session for debugging
+
+// Check session status route
+
 
 app.use('/category', require('./routes/categoryRoutes'));
 app.use('/search', require('./routes/searchRoutes'));
 app.use('/book', require('./routes/bookRoutes'));
 app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
+app.use('/address', require('./routes/address'));
+const addressRouter = require('./routes/address'); // or wherever your router file is
+app.use('/user', addressRouter); // Ensure the prefix `/user` is correctly applied if you're mounting it under '/user'
+
 
 
 const connection = require('./database')
@@ -88,6 +107,12 @@ app.post('/login', (req, res) => {
 
   });
 });
+app.post('/login', (req, res) => {
+  const user = { customer_id: 123, first_name: 'John' }; // Example user data
+  req.session.user = user; // Store user in session
+  res.redirect('/'); // Redirect after login
+});
+
 
 app.post('/create-account', (req, res) => {
   // Destructure incoming data from the form
