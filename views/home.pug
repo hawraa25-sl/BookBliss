@@ -1,5 +1,9 @@
 extends index
 
+block head-ext
+    style
+        include styles/home.css
+
 block content
     .main-header
         .header
@@ -8,6 +12,8 @@ block content
             p Creating a space for people to escape into stories and find comfort during tough times.
             a.btn(href="") Read More
         img(src="/images/home5.jpg" alt="")
+
+    .section-separator
 
     //- Categories section
     section#categories
@@ -24,7 +30,9 @@ block content
                     .book-img
                         img(src=category.image alt=category.name)
                     h4= category.name
-            #categoriess        
+            #categories        
+
+    .section-separator
 
     section#about
         .set-row
@@ -54,7 +62,8 @@ block content
     //-                 span 19 January 2021
 
     //- Contact Section
-    section#contactus
+
+    .section-separator
 
     .contact-row
         .col

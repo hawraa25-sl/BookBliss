@@ -49,10 +49,6 @@ app.use('/book', require('./routes/bookRoutes'));
 app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/address', require('./routes/address'));
-const addressRouter = require('./routes/address'); // or wherever your router file is
-app.use('/user', addressRouter); // Ensure the prefix `/user` is correctly applied if you're mounting it under '/user'
-
-
 
 const connection = require('./database')
 

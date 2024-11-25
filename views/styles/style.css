@@ -373,6 +373,7 @@ input::placeholder {
 }
 
 footer {
+    padding-top: 20px;
     background: #10839dbb;
     /* padding: 26px 20px;
     text-align: center;
@@ -572,6 +573,12 @@ footer {
     .set-row .col {
         width: 280px;
     }
+}
+
+.section-separator {
+    background: #e7f0f3ac;
+    width: 100%;
+    padding: 20px;
 }
 
 /* #nav-account-icon {

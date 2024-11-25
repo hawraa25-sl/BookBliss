@@ -5,6 +5,7 @@ const config = require('../config.json');
 const connection = mysql.createConnection(config.databaseUrl);
 
 // Route to display or manage the address
+// /address
 router.get('/', (req, res) => {
   const customerId = req.session?.user?.customer_id;
 
@@ -32,10 +33,11 @@ router.get('/', (req, res) => {
     }
 
     // Render the address page and pass the results to the view
-    res.render('account/address', { customer: results[0] });
+    res.render('account', { customer: results[0] });
   });
 });
-router.post('/user/address', (req, res) => {
+
+router.post('/', (req, res) => {
   const customerId = req.session?.user?.customer_id;
 
   // Ensure the session contains a valid customerId
@@ -43,18 +45,18 @@ router.post('/user/address', (req, res) => {
     return res.status(401).send('Unauthorized: No customer session found.');
   }
 
-  const { address1, address2, city, state, zip, country } = req.body;
+  const { city, zipcode, streetName, buildingName, floorNumber, details } = req.body;
 
-  if (!address1 || !address2 || !city || !state || !zip || !country) {
-    return res.render('account/address', { error: 'Ensure all fields are provided' });
+  if (!city || !zipcode || !streetName || !buildingName || !floorNumber || !details) {
+    return res.render('account', { error: 'Ensure all fields are provided' });
   }
 
   // Address doesn't exist, insert it
   const insertQuery = `
-    INSERT INTO addresses (customer_id, address1, address2, city, state, zip, country)
+    INSERT INTO addresses (customer_id, city, zipcode, street_name, building_name, floor_number, details)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  const insertValues = [customerId, address1, address2, city, state, zip, country];
+  const insertValues = [customerId, city, zipcode, streetName, buildingName, floorNumber, details];
 
   connection.query(insertQuery, insertValues, (err) => {
     if (err) {
@@ -66,7 +68,7 @@ router.post('/user/address', (req, res) => {
     console.log('Address saved successfully for customer:', customerId);
 
     // Send a success message to the view
-    res.render('account/address', { 
+    res.render('account', { 
       successMessage: 'Address saved successfully!', 
       user: req.session.user 
     });
