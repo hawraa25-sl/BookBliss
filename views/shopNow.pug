@@ -1,0 +1,22 @@
+extends index    
+
+block head-ext
+  style
+    include styles/shopNow.css
+
+block content
+  h1#shop-now-title Shop Now - All Books
+  .book-list
+    each book in books
+      .book-item
+        .book-image
+          if book.cover_image_url
+            img(src=book.cover_image_url, alt=book.title)
+          else
+            img(src="/images/default-book.png", alt="Default book cover")
+        .book-info
+          h2= book.title
+          p.genre Genre: #{book.genre}
+          p.price Price: $#{book.price}
+          button.btn-details(onclick=`window.location.href='/book/${book.book_id}'`) View Details
+

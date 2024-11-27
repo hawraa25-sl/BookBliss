@@ -45,40 +45,73 @@ router.post('/', (req, res) => {
     return res.status(401).send('Unauthorized: No customer session found.');
   }
 
-  const { city, zipcode, streetName, buildingName, floorNumber, details } = req.body;
+  const { city,  streetName, buildingName, floorNumber,zipcode, details } = req.body;
 
-  if (!city || !zipcode || !streetName || !buildingName || !floorNumber || !details) {
+  // Ensure all fields are provided
+  if (!city   || !streetName || !buildingName || !floorNumber || !zipcode || !details) {
     return res.render('account', { error: 'Ensure all fields are provided' });
   }
 
-  // Address doesn't exist, insert it
-  const insertQuery = `
-    INSERT INTO addresses (customer_id, city, zipcode, street_name, building_name, floor_number, details)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+  // Check if the address already exists
+  const selectQuery = `
+    SELECT * FROM addresses
+    WHERE customer_id = ? AND city = ?   AND street_name = ? AND building_name = ? AND floor_number = ?  AND zipcode = ? AND details = ?
   `;
-  const insertValues = [customerId, city, zipcode, streetName, buildingName, floorNumber, details];
+  const selectValues = [customerId, city,   streetName, buildingName, floorNumber,zipcode, details];
 
-  connection.query(insertQuery, insertValues, (err) => {
-    if (err) {
-      console.error('Error saving address:', err.message);
-      return res.status(500).send('Error saving address.');
+  connection.query(selectQuery, selectValues, (selectErr, results) => {
+    if (selectErr) {
+      console.error('Error checking address existence:', selectErr.message);
+      return res.status(500).send('Error checking address existence.');
     }
 
-    // Log success message to console
-    console.log('Address saved successfully for customer:', customerId);
+    // If address exists, delete it
+    if (results.length > 0) {
+      const deleteQuery = `
+        DELETE FROM addresses
+        WHERE customer_id = ? AND city = ?   AND street_name = ? AND building_name = ? AND floor_number = ?  AND zipcode = ? AND details = ?
+      `;
+      connection.query(deleteQuery, selectValues, (deleteErr) => {
+        if (deleteErr) {
+          console.error('Error deleting existing address:', deleteErr.message);
+          return res.status(500).send('Error deleting existing address.');
+        }
 
-    // Send a success message to the view
-    res.render('account', { 
-      successMessage: 'Address saved successfully!', 
-      user: req.session.user 
-    });
-
-    // Redirect after displaying the success message
-    setTimeout(() => {
-      res.redirect('/');  // Redirect to homepage after 3 seconds
-    }, 3000);  // 3000 milliseconds (3 seconds)
+        console.log('Existing address deleted successfully.');
+        // Insert the new address
+        insertAddress();
+      });
+    } else {
+      // If address doesn't exist, directly insert it
+      insertAddress();
+    }
   });
+
+  // Function to insert the new address
+  const insertAddress = () => {
+    const insertQuery = `
+      INSERT INTO addresses (customer_id, city,   street_name, building_name, floor_number, zipcode, details)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    const insertValues = [customerId, city, streetName, buildingName, floorNumber,zipcode, details];
+
+    connection.query(insertQuery, insertValues, (err) => {
+      if (err) {
+        console.error('Error saving address:', err.message);
+        return res.status(500).send('Error saving address.');
+      }
+
+      console.log('Address saved successfully for customer:', customerId);
+
+      // Send a success message to the view
+      res.render('account', {
+        successMessage: 'Address saved successfully!',
+        user: req.session.user,
+      });
+    });
+  };
 });
+
 
 
 

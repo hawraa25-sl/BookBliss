@@ -121,5 +121,102 @@ router.post('/add', async (req, res) => {
         return res.status(500).send();
     }
 });
+router.post('/update', async (req, res) => {
+    const customerId = req.session?.user?.customer_id; // Customer ID from session
+    const { cart_item_id, quantity } = req.body; // Form data
+
+    if (!customerId) {
+        return res.redirect('/account');
+    }
+
+    // Ensure data validity
+    if (!Array.isArray(cart_item_id) || !Array.isArray(quantity)) {
+        return res.status(400).send('Invalid data submitted');
+    }
+
+    try {
+        // Update each cart item
+        for (let i = 0; i < cart_item_id.length; i++) {
+            const itemId = cart_item_id[i];
+            const qty = parseInt(quantity[i], 10);
+
+            if (qty <= 0) {
+                // Remove item if quantity is zero or negative
+                await new Promise((resolve, reject) => {
+                    connection.query('DELETE FROM cart_items WHERE cart_item_id = ?', [itemId], (err) => {
+                        if (err) reject(err);
+                        resolve();
+                    });
+                });
+            } else {
+                // Update quantity otherwise
+                await new Promise((resolve, reject) => {
+                    connection.query(
+                        'UPDATE cart_items SET quantity = ? WHERE cart_item_id = ?',
+                        [qty, itemId],
+                        (err) => {
+                            if (err) reject(err);
+                            resolve();
+                        }
+                    );
+                });
+            }
+        }
+
+        res.redirect('/cart'); // Redirect back to the cart page
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Failed to update the cart');
+    }
+});
+router.post('/delete', (req, res) => {
+    const { cart_item_id } = req.body; // Get cart_item_id from the form submission
+
+    if (!cart_item_id) {
+        return res.status(400).send('Cart item ID is required');
+    }
+
+    // Query to delete the cart item
+    const query = `DELETE FROM cart_items WHERE cart_item_id = ?`;
+
+    connection.query(query, [cart_item_id], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error deleting cart item');
+        }
+
+        // Optionally, you can fetch the updated cart to show on the page or just redirect
+        res.redirect('/cart?successMessage=Item+deleted+successfully'); // Redirect back to the cart page after deleting the item
+    });
+});
+// Example in your cart route handler (express)
+router.post('/update', async (req, res) => {
+    const { cart_item_id, quantity } = req.body;  // Extract data from the form
+  
+    if (!cart_item_id || !quantity) {
+      return res.status(400).send('Cart item ID and quantity are required');
+    }
+  
+    try {
+      // Update the quantity in the database
+      const query = `UPDATE cart_items SET quantity = ? WHERE cart_item_id = ?`;
+      connection.query(query, [quantity, cart_item_id], (err, result) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).send('Error updating cart item');
+        }
+  
+        // Send a success response
+        res.send('Item updated successfully');
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error updating the cart');
+    }
+  });
+  
+  
 
 module.exports = router;
+
+ 

@@ -1,0 +1,32 @@
+extends layout
+
+block head-ext
+  style
+    include styles/checkout.css
+
+block content
+  .checkout-container
+    h1 Thank You for Your Order!
+
+    h3 Order Summary:
+    p Order Number: Order #= orderId
+    p Date and Time of Order: Placed on = orderDate
+
+    h3 Shipping Details:
+    p Name: = shippingDetails.name
+    p Address: = shippingDetails.address
+    p City: = shippingDetails.city
+    p State: = shippingDetails.state
+    p ZIP Code: = shippingDetails.zip
+    p Payment Method: = shippingDetails.payment_method
+
+    h3 Order Items:
+    ul
+      each item in cartItems
+        li
+          p= item.quantity + ' x ' + item.title + ' - $' + (item.price * item.quantity).toFixed(2)
+
+    h3 Total Amount:
+    p Total: $= totalAmount.toFixed(2)
+
+    p Thank you for shopping with us! We will process your order shortly.

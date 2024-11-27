@@ -2,6 +2,8 @@ const express = require('express');
 const session = require('express-session');
 const app = express()
 const port = 3000
+const path = require('path');
+
 
 const { categoryList } = require('./constants');
 
@@ -49,6 +51,12 @@ app.use('/book', require('./routes/bookRoutes'));
 app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/address', require('./routes/address'));
+app.use('/shopNow', require('./routes/shopNow'));  
+app.use(express.static(path.join(__dirname, 'public')));
+ 
+
+
+
 
 const connection = require('./database')
 

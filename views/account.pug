@@ -15,9 +15,6 @@ block content
         form(action="/address" method="POST")
           label(for="city") City:
           input#address1(type="text" name="city" value=user.address1 placeholder="Enter your address" required)
-
-          label(for="zipcode") Zip:
-          input#address2(type="text" name="zipcode" value=user.address2 placeholder="Apartment, suite, unit, etc.")
     
           label(for="streetName") Street Name:
           input#city(type="text" name="streetName" value=user.city placeholder="Enter your city" required)
@@ -26,7 +23,10 @@ block content
           input#state(type="text" name="buildingName" value=user.state placeholder="Enter your state" required)
 
           label(for="floorNumber") Floor Number
-          input#zip(type="text" name="floorNumber" value=user.zip placeholder="Enter your ZIP code" required)
+          input#zip(type="number" name="floorNumber" value=user.zip placeholder="Enter your Floor code" required)
+
+          label(for="zipcode") Zip:
+          input#address2(type="text" name="zipcode" value=user.address2 placeholder="Apartment, suite, unit, etc.")
 
           label(for="details") Details:
           input#country(type="text" name="details" value=user.country placeholder="Enter your country" required)
