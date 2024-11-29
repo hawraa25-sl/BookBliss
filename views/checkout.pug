@@ -26,9 +26,9 @@ block content
       .form-section
         h2 Personal Details
         label(for="name") Name:
-        input#name(type="text" name="name" placeholder="Enter your name" required value=`${user.first_name} ${user.last_name}`)
+        input#name(type="text" name="name" placeholder="Enter your name" required value=`${user.first_name} ${user.last_name}` disabled="disabled")
         label(for="email") Email:
-        input#email(type="email" name="email" placeholder="Enter your email" required value=user.email)
+        input#email(type="email" name="email" placeholder="Enter your email" required value=user.email disabled="disabled")
 
       // Address Section
       .form-section

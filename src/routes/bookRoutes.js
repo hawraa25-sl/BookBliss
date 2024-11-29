@@ -32,9 +32,6 @@ router.get('/:id', (req, res) => {
                 console.error(err);
                 return res.status(500).send('Error retrieving reviews');
             }
-
-            console.log(bookResults)
-
             res.render('book', { 
                 book: bookResults[0],
                 reviews: reviewResults

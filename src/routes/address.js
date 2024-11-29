@@ -33,6 +33,7 @@ router.get('/', (req, res) => {
     }
 
     // Render the address page and pass the results to the view
+    console.log(results[0])
     res.render('account', { customer: results[0] });
   });
 });
@@ -48,14 +49,14 @@ router.post('/', (req, res) => {
   const { city,  streetName, buildingName, floorNumber,zipcode, details } = req.body;
 
   // Ensure all fields are provided
-  if (!city   || !streetName || !buildingName || !floorNumber || !zipcode || !details) {
+  if (!city   || !streetName || !buildingName || !floorNumber || !details) {
     return res.render('account', { error: 'Ensure all fields are provided' });
   }
 
   // Check if the address already exists
   const selectQuery = `
     SELECT * FROM addresses
-    WHERE customer_id = ? AND city = ?   AND street_name = ? AND building_name = ? AND floor_number = ?  AND zipcode = ? AND details = ?
+    WHERE customer_id = ?
   `;
   const selectValues = [customerId, city,   streetName, buildingName, floorNumber,zipcode, details];
 
@@ -69,7 +70,7 @@ router.post('/', (req, res) => {
     if (results.length > 0) {
       const deleteQuery = `
         DELETE FROM addresses
-        WHERE customer_id = ? AND city = ?   AND street_name = ? AND building_name = ? AND floor_number = ?  AND zipcode = ? AND details = ?
+        WHERE customer_id = ?
       `;
       connection.query(deleteQuery, selectValues, (deleteErr) => {
         if (deleteErr) {

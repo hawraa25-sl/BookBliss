@@ -21,15 +21,14 @@ block content
             p.price Price: #{item.price}
             form(action="/cart/update" method="POST")
               input(type="hidden" name="cart_item_id" value=item.cart_item_id)
-              label(for="quantity") Quantity:
-              input.quantity-input(type="number" name="quantity" value=item.quantity min="1" required data-price=item.price)
+              label(for="quantity") Quantity: #{item.quantity}
+              //- input.quantity-input(type="number" name="quantity" value=item.quantity min="1" required data-price=item.price)
               p.subtotal.subtotal-price(id="subtotal-#{item.cart_item_id}") Subtotal: $#{(item.price * item.quantity).toFixed(2)}
           form(action="/cart/delete" method="POST" style="display: inline;")
               input(type="hidden" name="cart_item_id" value=item.cart_item_id)
               button(type="submit" class="btn-delete") Delete   
       .cart-total
         h3 Total: $#{cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
-      button.btn-update(type="submit") Save cart
       a.btn-checkout(type="button", href="/checkout") Checkout
   else
     .empty-cart

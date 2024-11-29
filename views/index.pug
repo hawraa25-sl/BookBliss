@@ -24,9 +24,7 @@ html(lang="en")
             .navmenu
                 .search-box
                     form(action="/search" method="GET" class="search-form")
-                        input(type="search" name="q" class="search" placeholder="Search books by title, author, description or genre..." required)
-                        button(type="submit" class="search-button")
-                            i.bx.bx-search
+                        input(type="search" name="q" class="search" placeholder="Search Books" required)
                 ul.nav-actions
                     li
                         a(href="/") Home
@@ -42,7 +40,6 @@ html(lang="en")
                             a(href="/account")= user.first_name
                         li
                             a(href="/cart") Cart
-                            //- i.bx.bxs-cart
                     else
                         li
                             a(href="/account") My Account
@@ -63,11 +60,11 @@ html(lang="en")
                             li.py-1 
                                 a(href="/home") Home
                             li.py-1 
-                                a(href="/categories") Categories     
+                                a(href="/#categories") Categories     
                             li.py-1 
-                                a(href="/about") About
+                                a(href="/#about") About
                             li.py-1 
-                                a(href="/contact") Contact us
+                                a(href="/#contact") Contact us
                     .col
                         h4 Categories
                         ul.list-unstyled.pt-2

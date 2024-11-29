@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
 
     try {
         const cart = await getCart(customerId)
-        console.log(cart)
         res.render('cart', { cart });
     } catch (error) {
         console.error(error);
@@ -25,8 +24,6 @@ router.get('/', async (req, res) => {
 router.post('/add', async (req, res) => {
     const bookId = req.body.book_id; // Getting the book ID from the form submission
     const customerId = req.session?.user?.customer_id; // Assuming customer_id is stored in session
-
-    console.log(bookId)
 
     if (!customerId) {
         return res.redirect('/account')
@@ -96,7 +93,6 @@ router.post('/add', async (req, res) => {
                 });
             });
 
-            console.log(book)
 
             if (book.length > 0) {
                 await new Promise(resolve => {

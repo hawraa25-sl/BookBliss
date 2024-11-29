@@ -13,7 +13,7 @@ block content
       .address-management
         h2 Manage Your Address
         form(action="/address" method="POST")
-          label(for="city") City:
+          label(for="city") City: #{user.street_name}
           input#address1(type="text" name="city" value=user.address1 placeholder="Enter your address" required)
     
           label(for="streetName") Street Name:

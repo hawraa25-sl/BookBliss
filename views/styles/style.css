@@ -42,6 +42,7 @@
     padding: 0px 10px;
     font-size: 18px;
     font-weight: 500;
+    text-decoration: none;
 }
 
 .search-box .search {
@@ -580,6 +581,7 @@ footer {
     width: 100%;
     padding: 20px;
 }
+
 
 /* #nav-account-icon {
     color: white;

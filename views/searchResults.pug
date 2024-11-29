@@ -31,9 +31,13 @@ block content
                                 span $#{book.price}
                             button.btn-details(onclick=`window.location.href='/book/${book.book_id}'`) View Details
                             if book.stock > 0
-                                button.add-to-cart(data-book-id=book.book_id)
-                                    i.bx.bx-cart-add
-                                    span Add to Cart
+                                    if user
+                                        if book.stock > 0
+                                            form(action="/cart/add" method="POST" style="display: inline")
+                                                input(type="hidden" name="book_id" value=book.book_id)
+                                                button.btn-add-cart Add to Cart
+                                        else
+                                            button.btn-out-stock(disabled) Out of Stock
                             else
                                 button.out-of-stock(disabled)
                                     i.bx.bx-x
