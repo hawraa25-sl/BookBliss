@@ -2,7 +2,7 @@ USE bookbliss;
 
 -- Customers
 INSERT INTO customers (first_name, last_name, password_hash, email, phone_number) VALUES
-('Emma', 'Thompson', SHA2('securepass123', 256), 'emma.thompson@email.com', '+1-555-0123'),
+('Emma', 'Thompson',    ('securepass123', 256), 'emma.thompson@email.com', '+1-555-0123'),
 ('James', 'Wilson', SHA2('strongpass456', 256), 'james.wilson@email.com', '+1-555-0124');
 
 -- Addresses

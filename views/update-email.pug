@@ -1,0 +1,12 @@
+extends ../index
+
+block content
+  .form-container
+    h2 Update Email
+    form(action="/account/update-email" method="POST")
+      label New Email:
+      input(type="email" name="email" required)
+      label Current Password:
+      input(type="password" name="password" required)
+      button(type="submit") Update Email
+    a(href="/account") Back to Account

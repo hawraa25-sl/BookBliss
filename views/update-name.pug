@@ -1,0 +1,12 @@
+extends ../index
+
+block content
+  .form-container
+    h2 Update Name
+    form(action="/account/update-name" method="POST")
+      label First Name:
+      input(type="text" name="first_name" value=user.first_name required)
+      label Last Name:
+      input(type="text" name="last_name" value=user.last_name required)
+      button(type="submit") Update Name
+    a(href="/account") Back to Account

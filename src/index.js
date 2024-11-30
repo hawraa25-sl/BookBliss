@@ -52,6 +52,7 @@ app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/address', require('./routes/address'));
 app.use('/shopNow', require('./routes/shopNow'));  
+app.use('/account', require('./routes/accountRoutes'));
 app.use(express.static(path.join(__dirname, 'public')));
  
 
@@ -82,7 +83,7 @@ app.get('/books', (req, res) => {
 })
 
 app.get('/account', (req, res) => {
-  res.render('account')
+  res.render('account/account-management')
 })
 
 // Handle user login
@@ -111,39 +112,7 @@ app.post('/login', (req, res) => {
 
   });
 });
-app.post('/login', (req, res) => {
-  const user = { customer_id: 123, first_name: 'John' }; // Example user data
-  req.session.user = user; // Store user in session
-  res.redirect('/'); // Redirect after login
-});
 
-
-app.post('/create-account', (req, res) => {
-  // Destructure incoming data from the form
-  const { first_name, last_name, email, phone_number, password } = req.body;
-
-  // Ensure all fields are provided
-  if (!first_name || !last_name || !email || !phone_number || !password) {
-    return res.render('account', { error: 'Ensure all fields are provided' })
-  }
-
-  // SQL query to insert the new customer into the database
-  const query = `
-    INSERT INTO customers (first_name, last_name, email, phone_number, password_hash)
-    VALUES (?, ?, ?, ?, ?);
-  `;
-
-  // Execute the query
-  connection.query(query, [first_name, last_name, email, phone_number, password], (err, result) => {
-    if (err) {
-      console.error(err)
-      return res.render('account', { error: "Unknown error occured" })
-    }
-
-    res.redirect('/');
-  });
-
-});
 
 // Logout route to destroy the session
 app.get('/logout', (req, res) => {

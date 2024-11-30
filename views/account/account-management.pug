@@ -1,0 +1,26 @@
+extends ../index
+
+block head-ext
+  title Account Management
+  style
+    include ../styles/account.css
+
+block content
+  .account-container
+    h1 Welcome, #{user.first_name} #{user.last_name}!
+    
+    .account-info
+      h2 Your Account Information
+      p Email: #{user.email}
+      p Phone: #{user.phone_number}
+    
+    .account-management
+      h2 Account Management Options
+      .account-buttons
+        a.account-btn(href="/account/name") Change Name
+        a.account-btn(href="/account/password") Change Password
+        a.account-btn(href="/account/gift-cards") View/Buy Gift Cards
+        a.account-btn(href="/account/address") Edit Address Information
+      
+    .logout-container
+      a.logout-btn(href="/logout") Logout

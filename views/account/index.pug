@@ -1,0 +1,51 @@
+extends ../index
+
+block head-ext
+  title Login or Create Account
+  style
+    include ../styles/account.css
+
+block content
+
+  .form-container
+    div
+      h2 Login
+
+      //- Login Form
+      form#login-form(action="/login" method="POST")
+        label Email:
+        input(type="text" name="email" required placeholder="Enter your email")
+        br
+        label Password:
+        input(type="password" name="password" required placeholder="Enter your password")
+        br
+        br
+        button(type="submit") Login
+        br
+
+
+    div
+      h2 Create Account
+
+      //- Create Account Form
+      form#register-form(action="/create-account" method="POST")
+        label First Name:
+        input(type="text" name="first_name" required placeholder="Enter your first name")
+        br
+        label Last Name:
+        input(type="text" name="last_name" required placeholder="Enter your last name")
+        br
+        label Email:
+        input(type="email" name="email" required placeholder="Enter your email")
+        br
+        label Phone Number:
+        input(type="text" name="phone_number" required placeholder="Enter your phone number")
+        br
+        label Password:
+        input(type="password" name="password" required placeholder="Enter your password")
+        br
+        br
+        button(type="submit") Create Account
+
+  if error
+    p.error-message= error

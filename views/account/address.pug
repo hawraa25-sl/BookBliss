@@ -1,0 +1,73 @@
+extends ../index
+
+block head-ext
+  title Manage Address
+  style
+    include ../styles/account.css
+
+block content
+  .account-container
+    h1 Manage Your Address
+    
+    form.address-form(action="/address" method="POST")
+      label(for="city") City:
+      input#city(
+        type="text" 
+        name="city" 
+        value=addressData ? addressData.city : ''
+        placeholder=addressData ? addressData.city : 'Enter your city'
+        required
+      )
+
+      label(for="streetName") Street Name:
+      input#streetName(
+        type="text" 
+        name="streetName" 
+        value=addressData ? addressData.street_name : ''
+        placeholder=addressData ? addressData.street_name : 'Enter your street name'
+        required
+      )
+
+      label(for="buildingName") Building Name:
+      input#buildingName(
+        type="text" 
+        name="buildingName" 
+        value=addressData ? addressData.building_name : ''
+        placeholder=addressData ? addressData.building_name : 'Enter building name'
+        required
+      )
+
+      label(for="floorNumber") Floor Number:
+      input#floorNumber(
+        type="number" 
+        name="floorNumber" 
+        value=addressData ? addressData.floor_number : ''
+        placeholder=addressData ? addressData.floor_number : 'Enter floor number'
+        required
+      )
+
+      label(for="zipcode") Zip Code:
+      input#zipcode(
+        type="text" 
+        name="zipcode" 
+        value=addressData ? addressData.zipcode : ''
+        placeholder=addressData ? addressData.zipcode : 'Enter zip code'
+      )
+
+      label(for="details") Additional Details:
+      input#details(
+        type="text" 
+        name="details" 
+        value=addressData ? addressData.details : ''
+        placeholder=addressData ? addressData.details : 'Enter additional details'
+        required
+      )
+
+      .button-group
+        button.btn-submit(type="submit") Save Address
+        a.btn-cancel(href="/account") Back to Account
+
+      if error
+        .error-message= error
+      if successMessage
+        .success-message= successMessage

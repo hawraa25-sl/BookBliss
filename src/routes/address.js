@@ -4,39 +4,7 @@ const mysql = require('mysql2');
 const config = require('../config.json');
 const connection = mysql.createConnection(config.databaseUrl);
 
-// Route to display or manage the address
-// /address
-router.get('/', (req, res) => {
-  const customerId = req.session?.user?.customer_id;
 
-  // Ensure the session contains a valid customerId
-  if (!customerId) {
-    return res.redirect('/account');
-  }
-
-  const query = `
-    SELECT customers.first_name, customers.last_name, addresses.*
-    FROM customers
-    JOIN addresses ON customers.customer_id = addresses.customer_id
-    WHERE customers.customer_id = ?
-  `;
-
-  connection.query(query, [customerId], (err, results) => {
-    if (err) {
-      console.error('Error fetching address:', err.message);
-      return res.status(500).send('Error fetching address.');
-    }
-
-    if (results.length === 0) {
-      // If no address is found, show the address form with a message
-      return res.status(404).send('No address found for this customer.');
-    }
-
-    // Render the address page and pass the results to the view
-    console.log(results[0])
-    res.render('account', { customer: results[0] });
-  });
-});
 
 router.post('/', (req, res) => {
   const customerId = req.session?.user?.customer_id;
@@ -46,11 +14,14 @@ router.post('/', (req, res) => {
     return res.status(401).send('Unauthorized: No customer session found.');
   }
 
-  const { city,  streetName, buildingName, floorNumber,zipcode, details } = req.body;
+  const { city, streetName, buildingName, floorNumber, zipcode, details } = req.body;
 
   // Ensure all fields are provided
-  if (!city   || !streetName || !buildingName || !floorNumber || !details) {
-    return res.render('account', { error: 'Ensure all fields are provided' });
+  if (!city || !streetName || !buildingName || !floorNumber || !details) {
+    return res.render('account/address', { 
+      error: 'Ensure all fields are provided',
+      customer: req.session.user
+    });
   }
 
   // Check if the address already exists
@@ -58,9 +29,8 @@ router.post('/', (req, res) => {
     SELECT * FROM addresses
     WHERE customer_id = ?
   `;
-  const selectValues = [customerId, city,   streetName, buildingName, floorNumber,zipcode, details];
-
-  connection.query(selectQuery, selectValues, (selectErr, results) => {
+  
+  connection.query(selectQuery, [customerId], (selectErr, results) => {
     if (selectErr) {
       console.error('Error checking address existence:', selectErr.message);
       return res.status(500).send('Error checking address existence.');
@@ -72,7 +42,7 @@ router.post('/', (req, res) => {
         DELETE FROM addresses
         WHERE customer_id = ?
       `;
-      connection.query(deleteQuery, selectValues, (deleteErr) => {
+      connection.query(deleteQuery, [customerId], (deleteErr) => {
         if (deleteErr) {
           console.error('Error deleting existing address:', deleteErr.message);
           return res.status(500).send('Error deleting existing address.');
@@ -91,10 +61,10 @@ router.post('/', (req, res) => {
   // Function to insert the new address
   const insertAddress = () => {
     const insertQuery = `
-      INSERT INTO addresses (customer_id, city,   street_name, building_name, floor_number, zipcode, details)
+      INSERT INTO addresses (customer_id, city, street_name, building_name, floor_number, zipcode, details)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    const insertValues = [customerId, city, streetName, buildingName, floorNumber,zipcode, details];
+    const insertValues = [customerId, city, streetName, buildingName, floorNumber, zipcode, details];
 
     connection.query(insertQuery, insertValues, (err) => {
       if (err) {
@@ -103,17 +73,11 @@ router.post('/', (req, res) => {
       }
 
       console.log('Address saved successfully for customer:', customerId);
-
-      // Send a success message to the view
-      res.render('account', {
-        successMessage: 'Address saved successfully!',
-        user: req.session.user,
-      });
+      // Redirect back to account management with a success message
+      req.session.successMessage = 'Address saved successfully!';
+      res.redirect('/account');
     });
   };
 });
-
-
-
 
 module.exports = router;
