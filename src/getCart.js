@@ -1,6 +1,30 @@
 const connection = require('./database');
 
 module.exports = async function getCart(customerId) {
+    const addresses = await new Promise((resolve, reject) => {
+        const query = `
+            SELECT 
+                address_id,
+                city,
+                street_name,
+                building_name,
+                floor_number,
+                zipcode,
+                details,
+                customer_id
+            FROM addresses
+            WHERE customer_id = ?`;
+
+        connection.query(query, [customerId], (err, rows) => {
+            if (err) {
+                return reject(err);
+            }
+            resolve(rows);
+        });
+    });
+
+    const addressDetails = addresses[0]
+
     const cartDetails = await new Promise((resolve, reject) => {
         const query = `
             SELECT 
@@ -34,6 +58,7 @@ module.exports = async function getCart(customerId) {
 
     // Extract cart information and items
     return {
+        address: addressDetails,
         cart_id: cartDetails[0].cart_id,
         items: cartDetails.map(item => ({
             cart_item_id: item.cart_item_id,

@@ -163,9 +163,10 @@ router.post('/login', (req, res) => {
 
     const user = results[0];
     req.session.user = user;
-    res.redirect('/account');
+    res.redirect('/');
   });
 });
+
 
 // Create account handler
 router.post('/create', (req, res) => {

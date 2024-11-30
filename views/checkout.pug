@@ -21,7 +21,7 @@ block content
       .cart-total
         h3 Total: $#{cart.items.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2)}
 
-    form(action="/checkout/submit" method="POST")
+    form(action="/checkout/order" method="POST")
       // Personal Details Section
       .form-section
         h2 Personal Details
@@ -33,26 +33,35 @@ block content
       // Address Section
       .form-section
         h2 Shipping Address
-        label(for="address") Address:
-        input#address(type="text" name="address" placeholder="Enter your address" required value="Sunset Apartments")
         label(for="city") City:
-        input#city(type="text" name="city" placeholder="Enter your city" required)
-        label(for="state") State:
-        input#state(type="text" name="state" placeholder="Enter your state" required)
+        input#city(type="text" name="city" placeholder="Enter your city" required value=cart.address.city)
+
+        label(for="street_name") Street Name:
+        input#street(type="text" name="street_name" placeholder="Enter your street name" required value=cart.address.street_name)
+
+        label(for="building_name") Building Name:
+        input#building(type="text" name="building_name" placeholder="Enter your building name" required value=cart.address.building_name)
+
+        label(for="floor_number") Floor Number:
+        input#floor(type="text" name="floor_number" placeholder="Enter your floor number" required value=cart.address.floor_number)
+
         label(for="zipcode") ZIP Code:
-        input#zip(type="text" name="zip" placeholder="Enter your ZIP code" required)
+        input#zip(type="text" name="zipcode" placeholder="Enter your ZIP code" required value=cart.address.zipcode)
+
+        label(for="details") Details:
+        input#details(type="text" name="details" placeholder="Enter additional details, if any" value=cart.address.details)
 
       // Payment Options Section
       .form-section
         h2 Payment Options
         label
-          input(type="radio" name="payment_method" value="cash" required)
+          input(type="radio" name="payment_method" value="Cash on Delivery" required)
           | Cash
         label
-          input(type="radio" name="payment_method" value="card" required)
+          input(type="radio" name="payment_method" value="Card" required)
           | Card
         label
-          input(type="radio" name="payment_method" value="giftcard" required)
+          input(type="radio" name="payment_method" value="Gift Card" required)
           | Gift Card
 
       // Submit Button

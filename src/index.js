@@ -11,8 +11,6 @@ const { categoryList } = require('./constants');
 app.use(express.json());
 // Set the views directory
 app.set('views', ['./views', './views/account']);  // Add './views/account' to search in both directories
-
-// Log the configured views directory
  
 
 // Set Pug as the view engine
@@ -43,8 +41,6 @@ app.use(function (req, res, next) {
 // Middleware to log the session for debugging
 
 // Check session status route
-
-
 app.use('/category', require('./routes/categoryRoutes'));
 app.use('/search', require('./routes/searchRoutes'));
 app.use('/book', require('./routes/bookRoutes'));
@@ -55,10 +51,6 @@ app.use('/shopNow', require('./routes/shopNow'));
 app.use('/account', require('./routes/accountRoutes'));
 app.use(express.static(path.join(__dirname, 'public')));
  
-
-
-
-
 const connection = require('./database')
 
 // home
@@ -81,49 +73,6 @@ app.get('/books', (req, res) => {
     }
   });
 })
-
-app.get('/account', (req, res) => {
-  res.render('account/account-management')
-})
-
-// Handle user login
-app.post('/login', (req, res) => {
-  const { email, password } = req.body;
-
-  connection.query('SELECT * FROM customers WHERE email = ?', [email], async (err, results) => {
-    if (err) {
-      console.error(err);
-      return res.render('account', { error: 'Unknown error occured' });
-    }
-    if (results.length === 0) {
-      return res.render('account', { error: "Customer not found" });
-    }
-
-    const user = results[0];
-    // const isPasswordValid = await bcrypt.compare(password, user.password);
-    const isPasswordValid = password === user.password_hash;
-
-    if (isPasswordValid) {
-      req.session.user = user;
-      res.redirect('/');
-    } else {
-      res.render('account', { error: 'Invalid password' });
-    }
-
-  });
-});
-
-
-// Logout route to destroy the session
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.status(500).send('Error logging out');
-    }
-    res.redirect('/');
-  });
-});
-
 
 app.get('/admin', (req, res) => {
   res.send("This is the admin page<br>Under construction")

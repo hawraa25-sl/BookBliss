@@ -31,7 +31,8 @@ router.get('/', async (req, res) => {
 // Handle placing the order
 router.post('/order', async (req, res) => {
   const customerId = req.session?.user?.customer_id;
-  const { name, email,address, city, state, zip, payment_method } = req.body;
+
+  const { city, steet_name, building_name, floor_number, zipcode, payment_method } = req.body;
 
   if (!customerId) {
     return res.redirect('/account');
@@ -44,7 +45,7 @@ router.post('/order', async (req, res) => {
 
     // Insert the order
     const orderResult = await query(
-      'INSERT INTO orders (customer_id, total_amount, payment_method, order_date) VALUES (?, ?, ?, NOW())',
+      'INSERT INTO orders (customer_id, total_amount, payment_method) VALUES (?, ?, ?)',
       [customerId, totalAmount, payment_method]
     );
     const orderId = orderResult.insertId;
@@ -57,11 +58,23 @@ router.post('/order', async (req, res) => {
       );
     }
 
+    await query(`
+      DELETE cart_items
+      FROM cart_items
+      INNER JOIN carts ON cart_items.cart_id = carts.cart_id
+      WHERE carts.customer_id = ?
+      `, [customerId]);
+
+    await query(
+      'DELETE FROM carts WHERE customer_id = ?',
+      [customerId]
+    );
+
     // Render the order confirmation page
     res.render('order-confirmation', {
       orderId,
       orderDate: new Date().toLocaleString(),
-      shippingDetails: { name, address, city, state, zip, payment_method },
+      shippingDetails: { city, steet_name, building_name, floor_number, zipcode, payment_method },
       cartItems: cart.items,
       totalAmount,
     });

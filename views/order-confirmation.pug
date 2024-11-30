@@ -1,4 +1,4 @@
-extends layout
+extends index
 
 block head-ext
   style
@@ -9,16 +9,17 @@ block content
     h1 Thank You for Your Order!
 
     h3 Order Summary:
-    p Order Number: Order #= orderId
-    p Date and Time of Order: Placed on = orderDate
+    p Order Number: Order #{orderId}
+    p Date and Time of Order: Placed on #{orderDate}
 
+    - const details = shippingDetails || {};
     h3 Shipping Details:
-    p Name: = shippingDetails.name
-    p Address: = shippingDetails.address
-    p City: = shippingDetails.city
-    p State: = shippingDetails.state
-    p ZIP Code: = shippingDetails.zip
-    p Payment Method: = shippingDetails.payment_method
+    p City: #{details.city || "undefined"}
+    p Street Name: #{details.street_name || "undefined"}
+    p Building Name: #{details.building_name || "undefined"}
+    p Floor Number: #{details.floor_number || "undefined"}
+    p ZIP Code: #{details.zipcode || "undefined"}
+    p Payment Method: #{details.payment_method || "undefined"}
 
     h3 Order Items:
     ul
@@ -27,6 +28,6 @@ block content
           p= item.quantity + ' x ' + item.title + ' - $' + (item.price * item.quantity).toFixed(2)
 
     h3 Total Amount:
-    p Total: $= totalAmount.toFixed(2)
+    p Total: #{totalAmount.toFixed(2)}
 
     p Thank you for shopping with us! We will process your order shortly.
