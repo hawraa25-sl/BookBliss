@@ -57,6 +57,13 @@ router.post('/order', async (req, res) => {
         [orderId, item.book_id, item.quantity, item.price]
       );
     }
+    // Reduce Book Stock
+    for (const item of cart.items) {
+      await query(
+        'UPDATE books SET stock = stock - ? where book_id = ?',
+        [item.quantity, item.book_id]
+      );
+    }
 
     await query(`
       DELETE cart_items
