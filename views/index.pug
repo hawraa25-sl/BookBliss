@@ -47,44 +47,39 @@ html(lang="en")
 
         block content
 
-        //- Footer
-        footer
-            .container
-                .row
-                    .col-6.col-md-4
-                        h3.fw-bold Book Bliss
-                        p.pt-2 Your favorite BookShop
-                    .col
-                        h4 Menu
-                        ul.list-unstyled.pt-2
-                            li.py-1 
-                                a(href="/home") Home
-                            li.py-1 
-                                a(href="/#categories") Categories     
-                            li.py-1 
-                                a(href="/#about") About
-                            li.py-1 
-                                a(href="/#contact") Contact us
-                    .col
-                        h4 Categories
-                        ul.list-unstyled.pt-2
-                            li.py-1 Finance
-                            li.py-1 Psychology 
-                            li.py-1 Romance
-                            li.py-1 SelfHelp
-                            li.py-1 Fiction
-                            li.py-1 Horror
-                    .col-6.col-lg-3
-                        h4 Social Media Links
-                        div.social-links(style="display: flex; gap: 10px;") 
-                           a(href="https://www.facebook.com/yourprofile" target="_blank" rel="noopener noreferrer")
-                             i.fab.fa-facebook(style="font-size: 1.5rem;  ") Facbook  
-                           a(href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer")
-                               i.fab.fa-instagram(style="font-size: 1.5rem;  ") Instagram
-                           a(href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer")
-                               i.fab.fa-twitter(style="font-size: 1.5rem;  ") X
-                    .footerBottom
-                        p @2024 All Rights Reserved By Free Online Book Shop
+        footer.footer
+            .footer-content
+                .footer-section
+                    h3.footer-title Book Bliss
+                    p.footer-subtitle Your favorite BookShop
+                    .footer-socials
+                        a(href="https://www.facebook.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Facebook")
+                            i.fab.fa-facebook
+                        a(href="https://www.instagram.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="Instagram")
+                            i.fab.fa-instagram
+                        a(href="https://x.com/yourprofile" target="_blank" rel="noopener noreferrer" aria-label="X")
+                            i.fab.fa-twitter
+                
+                .footer-section
+                    h4.footer-heading Menu
+                    ul.footer-links
+                        li: a(href="/") Home
+                        li: a(href="/#categories") Categories     
+                        li: a(href="/#about") About
+                        li: a(href="/#contact") Contact us
+                
+                .footer-section
+                    h4.footer-heading Categories
+                    ul.footer-links
+                        li: a(href="/category/finance") Finance
+                        li: a(href="/category/psychology") Psychology
+                        li: a(href="/category/romance") Romance
+                        li: a(href="/category/selfhelp") Self-Help
+                        li: a(href="/category/fiction") Fiction
+                        li: a(href="/category/horror") Horror
+
+            .footer-bottom
+                p.copyright &copy; 2024 Book Bliss. All Rights Reserved
 
 
         //- Scripts

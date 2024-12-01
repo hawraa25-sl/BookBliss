@@ -43,3 +43,8 @@ INSERT INTO reviews (book_id, customer_id, rating, review_text, review_date) VAL
 (9, 2, 5, 'Powerful insights into self-sabotage. Very relatable content.', '2024-02-15'),
 (10, 1, 3, 'Good concepts but the 5 AM wake-up is challenging to maintain.', '2024-01-10'),
 (11, 2, 4, 'Peterson provides practical wisdom for modern life.', '2024-02-20');
+
+
+--- admin insert
+INSERT INTO `admin` (email, password_hash) 
+VALUES ('admin@bookstore.com', SHA2('12345678', 256));

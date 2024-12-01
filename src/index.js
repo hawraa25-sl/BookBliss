@@ -65,7 +65,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/books', (req, res) => {
-  const query = 'SELECT * FROM Books';
+  const query = 'SELECT * FROM books';
   connection.query(query, (err, results) => {
     if (err) {
       console.log(err)

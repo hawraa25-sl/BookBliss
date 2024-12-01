@@ -1,146 +1,105 @@
- /* shopNow.css */
-
-/* Main book list container */
-.book-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Flexible columns */
-    gap: 2rem;
-    padding: 2rem;
-    box-sizing: border-box;
-}
+/* shopNow.css */
 #shop-now-title {
-    color:   #10839dbb; /* Choose the color you want */
-    font-size: 2rem; /* You can also adjust the size */
-    text-align: left;
-    margin: 10px;
-}
-
-
-/* Individual book item container */
-.book-item {
+    text-align: center;
+    margin: 2rem 0;
+    color: #333;
+    font-size: 2.5rem;
+  }
+  
+  .book-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+  
+  .book-item {
     background: white;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
     overflow: hidden;
-}
-
-.book-item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Book image styles */
-.book-image {
+  }
+  
+  .book-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .book-image {
     width: 100%;
-    height: 490px;
+    height: 350px;
     overflow: hidden;
-}
-
-.book-image img {
+  }
+  
+  .book-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures the image covers the area */
-}
-
-/* Book info section */
-.book-info {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .book-item:hover .book-image img {
+    transform: scale(1.05);
+  }
+  
+  .book-info {
     padding: 1.5rem;
-}
-
-.book-info h2 {
-    margin: 0 0 0.5rem;
-    font-size: 1.25rem;
-    color: #2d3748;
-}
-
-.book-info p {
-    font-size: 1rem;
-    color: #718096;
+  }
+  
+  .book-info h2 {
+    font-size: 1.3rem;
     margin-bottom: 0.5rem;
-}
-
-/* Genre and Price styling */
-.genre {
-    font-style: italic;
-}
-
-.price {
-    font-weight: bold;
+    color: #333;
+  }
+  
+  .genre, .price {
+    margin: 0.5rem 0;
+    color: #666;
+  }
+  
+  .price {
     color: #2c5282;
-    font-size: 1.125rem;
-    margin: 1rem 0;
-}
-
-/* Button to view details */
-.btn-details {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  .btn-details {
     width: 100%;
-    padding: 0.75rem;
-    background-color:   #10839dbb;
+    padding: 0.8rem;
+    background-color: #2c5282;
     color: white;
     border: none;
     border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.btn-details:hover {
-    background-color:   #10839d6d;
-}
-
-/* Header section styling */
-#shop-now h1 {
-    text-align: center;
-    color: #2d3748;
-    margin: 2rem 0 1rem;
-    font-size: 2rem;
-}
-
-/* Media Queries for Responsiveness */
-
-/* Medium screens (tablets and larger mobile devices) */
-@media (max-width: 768px) {
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+  }
+  
+  .btn-details:hover {
+    background-color: #2a4365;
+  }
+  
+  @media (max-width: 768px) {
+    #shop-now-title {
+      font-size: 2rem;
+    }
+  
     .book-list {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* Adjust for smaller screens */
-        gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
     }
-
-    .book-info h2 {
-        font-size: 1.1rem; /* Smaller text for titles */
+  
+    .book-image {
+      height: 300px;
     }
-
-    .price {
-        font-size: 1rem; /* Adjust price size for smaller screens */
-    }
-
-    .btn-details {
-        padding: 0.5rem; /* Smaller buttons on medium screens */
-    }
-    #shop-now h1 {
-        text-align: left;
-        font-size: 1.8rem; /* Adjust font size for tablets */
-    }
-}
-
-/* Small screens (mobile phones) */
-@media (max-width: 480px) {
+  }
+  
+  @media (max-width: 480px) {
     .book-list {
-        grid-template-columns: 1fr; /* Stack items vertically on mobile */
-        gap: 1.2rem;
+      grid-template-columns: 1fr;
     }
-
-    #shop-now h1 {
-        font-size: 1.5rem; /* Smaller header for mobile */
-        text-align: center; /* Ensure the header is centered on mobile */
-    }
-
-    .category-description {
-        font-size: 0.9rem; /* Smaller description font */
-        margin: 0 1rem; /* Add some margin for readability */
-    }
-
-    /* Adjust padding and margin for book items on mobile */
-    .book-item {
-        padding: 0.8rem; /* Smaller padding for mobile */
-    }
-}
+  }

@@ -1,0 +1,350 @@
+/* home.css */
+
+/* Hero Section */
+.main-header {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem 5%;
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    overflow: hidden;
+}
+
+.main-header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease;
+}
+
+.main-header img:hover {
+    transform: scale(1.02) rotate(1deg);
+}
+
+.header {
+    padding-right: 3rem;
+}
+
+.header h5 {
+    font-size: 1.5rem;
+    color: #2c5282;
+    margin-bottom: 1rem;
+    animation: slideInLeft 0.8s ease;
+}
+
+.header h2 {
+    font-size: 3.5rem;
+    color: #1a365d;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    animation: slideInLeft 1s ease;
+}
+
+.header p {
+    font-size: 1.2rem;
+    color: #4a5568;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    animation: slideInLeft 1.2s ease;
+}
+
+.header .btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: #2c5282;
+    color: white;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    animation: slideInLeft 1.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.header .btn:hover {
+    background: #2a4365;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 82, 130, 0.3);
+}
+
+.header .btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 300px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.5s ease;
+}
+
+.header .btn:hover::after {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Categories Section */
+#categories {
+    padding: 4rem 5%;
+}
+
+.cat-row {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.cat-header h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1rem;
+}
+
+.cat-header p {
+    max-width: 700px;
+    margin: 0 auto;
+    color: #4a5568;
+    line-height: 1.6;
+}
+
+.cat-books {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.category-item {
+    text-decoration: none;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.category-item:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.category-item .book-img {
+    height: 300px;
+    overflow: hidden;
+}
+
+.category-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.category-item:hover img {
+    transform: scale(1.1);
+}
+
+.category-item h4 {
+    padding: 1.5rem;
+    text-align: center;
+    color: #2d3748;
+    font-size: 1.2rem;
+    background: rgba(255, 255, 255, 0.9);
+    margin: 0;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    backdrop-filter: blur(5px);
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.category-item:hover h4 {
+    transform: translateY(-5px);
+}
+
+/* About Section */
+#about {
+    padding: 4rem 5%;
+    background: #f7fafc;
+}
+
+.set-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.set-row img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease;
+}
+
+.set-row img:hover {
+    transform: scale(1.02) rotate(-1deg);
+}
+
+.about-content {
+    padding-right: 2rem;
+}
+
+.about-content h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 1.5rem;
+}
+
+.about-content p {
+    color: #4a5568;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.btn2 {
+    display: inline-block;
+    padding: 1rem 2rem;
+    background: #2c5282;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn2:hover {
+    background: #2a4365;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 82, 130, 0.3);
+}
+
+/* Contact Section */
+.contact-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    padding: 4rem 5%;
+}
+
+.contact-row h2 {
+    font-size: 2.5rem;
+    color: #2d3748;
+    margin-bottom: 2rem;
+}
+
+.contact-row img {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.contact-row form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.contact-row input,
+.contact-row textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.contact-row input:focus,
+.contact-row textarea:focus {
+    border-color: #2c5282;
+    box-shadow: 0 0 0 3px rgba(44, 82, 130, 0.1);
+    outline: none;
+}
+
+.contact-row button {
+    padding: 1rem 2rem;
+    background: #2c5282;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.contact-row button:hover {
+    background: #2a4365;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(44, 82, 130, 0.3);
+}
+
+/* Animations */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Section Separator */
+.section-separator {
+    height: 2px;
+    background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+    margin: 2rem auto;
+    width: 80%;
+    max-width: 1200px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .header h2 {
+        font-size: 3rem;
+    }
+    
+    .main-header {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .header {
+        padding-right: 0;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .set-row,
+    .contact-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .about-content {
+        padding-right: 0;
+    }
+    
+    .header h2 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h2 {
+        font-size: 2rem;
+    }
+    
+    .cat-books {
+        grid-template-columns: 1fr;
+    }
+}
