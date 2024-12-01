@@ -51,7 +51,6 @@ app.use('/checkout', require('./routes/checkout'));
 app.use('/address', require('./routes/address'));
 app.use('/shopNow', require('./routes/shopNow'));  
 app.use('/account', require('./routes/accountRoutes'));
-app.use('/admin', require('./routes/admin/adminRoutes'));
 // In your index.js where you set up admin routes:
 const adminRoutes = require('./routes/admin/adminRoutes');
 app.use('/admin', adminRoutes.router);
