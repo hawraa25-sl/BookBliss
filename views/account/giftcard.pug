@@ -1,0 +1,16 @@
+extends ../index
+
+block head-ext
+    style
+        include ../styles/giftcard.css
+
+
+block content
+    #gccontainer
+        h1#gctitle Buy a New Gift Card
+        form#gcform(action="/giftcard/buy" method="POST")
+            label#amountlabel(for="amount") Enter Amount:
+            input#amountinput(type="number" name="amount" min="1" required value=20)
+            button#gcsubmit(type="submit") Buy Gift Card
+
+        p#gcmessage= message
