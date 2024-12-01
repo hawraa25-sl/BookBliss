@@ -52,7 +52,7 @@ app.use('/address', require('./routes/address'));
 app.use('/shopNow', require('./routes/shopNow'));  
 app.use('/account', require('./routes/accountRoutes'));
 app.use('/admin', require('./routes/admin/adminRoutes'));
-app.use('/admin', adminRoutes.router);
+app.use('/giftcard', require('./routes/giftcard'));
 app.use(express.static(path.join(__dirname, 'public')));
  
 const connection = require('./database')
