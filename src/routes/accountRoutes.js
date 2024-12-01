@@ -108,12 +108,6 @@ router.post('/update-password', (req, res) => {
   });
 });
 
-// Gift cards page
-router.get('/gift-cards', (req, res) => {
-  if (!req.session.user) return res.redirect('/account');
-  res.render('account/gift-cards');
-});
-
 // Address page
 router.get('/address', (req, res) => {
   const customerId = req.session?.user?.customer_id;

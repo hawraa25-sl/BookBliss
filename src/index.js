@@ -55,6 +55,8 @@ app.use('/admin', require('./routes/admin/adminRoutes'));
 // In your index.js where you set up admin routes:
 const adminRoutes = require('./routes/admin/adminRoutes');
 app.use('/admin', adminRoutes.router);
+app.use('/giftcard', require('./routes/giftcard'));
+
 app.use(express.static(path.join(__dirname, 'public')));
  
 const connection = require('./database')

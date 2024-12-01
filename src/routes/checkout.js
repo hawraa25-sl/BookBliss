@@ -38,10 +38,39 @@ router.post('/order', async (req, res) => {
     return res.redirect('/account');
   }
 
+  let cart
   try {
     // Fetch the cart
-    const cart = await getCart(customerId);
+    cart = await getCart(customerId);
     const totalAmount = cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+
+    let validateGCResult
+    // Check for gift card number
+    if (req.body.gift_card_number) {
+      validateGCResult = await query(
+        'SELECT * FROM gift_cards WHERE code = ?',
+        [req.body.gift_card_number]
+      )
+
+      console.log(validateGCResult)
+
+      if (validateGCResult.length != 1) {
+        throw "Invalid Gift card code"
+      }
+
+      const amount = validateGCResult[0]?.amount
+      const is_redeemed = validateGCResult[0]?.is_redeemed
+      
+      if (is_redeemed || amount < totalAmount) {
+        
+        throw "Insufficient Gift card amount"
+      }
+
+      await query(
+        'UPDATE gift_cards SET is_redeemed = 1 WHERE code = ?',
+        [req.body.gift_card_number]
+      )
+    }
 
     // Insert the order
     const orderResult = await query(
@@ -76,7 +105,6 @@ router.post('/order', async (req, res) => {
       'DELETE FROM carts WHERE customer_id = ?',
       [customerId]
     );
-
     // Render the order confirmation page
     res.render('order-confirmation', {
       orderId,
@@ -86,8 +114,7 @@ router.post('/order', async (req, res) => {
       totalAmount,
     });
   } catch (error) {
-    console.error('Error placing order:', error);
-    res.status(500).send('Failed to place order');
+    res.render('checkout', { cart, error: `Error placing order: ${error}`})
   }
 });
 
