@@ -52,7 +52,6 @@ router.post('/order', async (req, res) => {
         [req.body.gift_card_number]
       )
 
-      console.log(validateGCResult)
 
       if (validateGCResult.length != 1) {
         throw "Invalid Gift card code"
