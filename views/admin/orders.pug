@@ -1,0 +1,136 @@
+extends dashboard
+
+block content
+    .container-fluid
+        h2.mb-4 Manage Orders
+        
+        table.table
+            thead
+                tr
+                    th Order ID
+                    th Customer
+                    th Order Date
+                    th Total Amount
+                    th Payment Method
+                    th Gift Card
+                    th # Items
+                    th Actions
+            tbody
+                each order in orders
+                    tr
+                        td= order.order_id
+                        td
+                            div= order.customer_name
+                            small.text-muted= order.customer_email
+                        td= new Date(order.order_date).toLocaleString()
+                        td= `$${(order.total_amount * 1).toFixed(2)}`
+                        td= order.payment_method
+                        td= order.gift_card_code || 'N/A'
+                        td= order.items.length
+                        td
+                            button.btn.btn-sm.btn-warning.me-2(onclick=`viewOrderDetails(${JSON.stringify(order).replace(/'/g, "&#39;")})`) View/Edit
+
+        // View/Edit Order Modal
+        #orderModal.modal.fade(tabindex='-1')
+            .modal-dialog.modal-lg
+                .modal-content
+                    .modal-header
+                        h5.modal-title Order Details
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        form#orderForm(method="POST")
+                            .row.mb-4
+                                .col-md-4
+                                    h6 Customer
+                                    p#customerName
+                                .col-md-4
+                                    h6 Order Date
+                                    p#orderDate
+                                .col-md-4
+                                    h6 Total Amount
+                                    p#totalAmount
+
+                            .mb-4
+                                label.form-label Payment Method
+                                select.form-control(name="payment_method")
+                                    option(value="Card") Card
+                                    option(value="Cash on Delivery") Cash on Delivery
+                                    option(value="Gift Card") Gift Card
+
+                            h6.mb-3 Order Items
+                            #orderItems.mb-4
+                                table.table.table-sm
+                                    thead
+                                        tr
+                                            th Book
+                                            th Price
+                                            th Quantity
+                                            th Subtotal
+                                    tbody#orderItemsBody
+
+                            button.btn.btn-primary(type="submit") Save Changes
+
+        script.
+            function formatDate(dateString) {
+                return new Date(dateString).toLocaleString();
+            }
+
+            function formatPrice(price) {
+                return `$${parseFloat(price).toFixed(2)}`;
+            }
+
+            function viewOrderDetails(order) {
+                const form = document.getElementById('orderForm');
+                form.action = `/admin/orders/edit/${order.order_id}`;
+                
+                // Set basic order info
+                document.getElementById('customerName').textContent = order.customer_name;
+                document.getElementById('orderDate').textContent = formatDate(order.order_date);
+                document.getElementById('totalAmount').textContent = formatPrice(order.total_amount);
+                
+                // Set payment method
+                const paymentSelect = form.querySelector('[name="payment_method"]');
+                paymentSelect.value = order.payment_method;
+
+                // Populate items table
+                const itemsBody = document.getElementById('orderItemsBody');
+                itemsBody.innerHTML = '';
+                
+                order.items.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>
+                            <div>${item.book_title}</div>
+                            <small class="text-muted">by ${item.book_author}</small>
+                        </td>
+                        <td>${formatPrice(item.price)}</td>
+                        <td>
+                            <input type="number" 
+                                   name="items[${item.order_item_id}]" 
+                                   value="${item.quantity}"
+                                   min="1"
+                                   class="form-control form-control-sm"
+                                   style="width: 80px"
+                                   onchange="updateSubtotal(this, ${item.price})"
+                            >
+                        </td>
+                        <td class="item-subtotal">${formatPrice(item.price * item.quantity)}</td>
+                    `;
+                    itemsBody.appendChild(row);
+                });
+
+                new bootstrap.Modal(document.getElementById('orderModal')).show();
+            }
+
+            function updateSubtotal(input, price) {
+                const quantity = parseInt(input.value);
+                const subtotal = price * quantity;
+                input.closest('tr').querySelector('.item-subtotal').textContent = formatPrice(subtotal);
+                
+                // Update total amount
+                let total = 0;
+                document.querySelectorAll('.item-subtotal').forEach(cell => {
+                    total += parseFloat(cell.textContent.replace('$', ''));
+                });
+                document.getElementById('totalAmount').textContent = formatPrice(total);
+            }

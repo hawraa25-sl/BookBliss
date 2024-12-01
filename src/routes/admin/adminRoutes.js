@@ -3,24 +3,18 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const config = require('../../config.json');
-
+const { isAdmin } = require('./middleware');
 const connection = mysql.createConnection(config.databaseUrl);
 
-// Middleware to check if user is admin - define before requiring route files
-const isAdmin = (req, res, next) => {
-    if (req.session && req.session.isAdmin) {
-        next();
-    } else {
-        res.redirect('/admin/login');
-    }
-};
+router.use('/books', require('./bookRoutes'));
+router.use('/customers', require('./customerRoutes'));
+router.use('/orders', require('./orderRoutes'));
+router.use('/gift-cards', require('./giftCardRoutes'));
 
-// Make middleware available for other routes
-module.exports.isAdmin = isAdmin;
-
-// Require routes AFTER exporting isAdmin
-const bookRoutes = require('./bookRoutes');
-const customerRoutes = require('./customerRoutes');
+// Default admin route redirects to books
+router.get('/', isAdmin, (req, res) => {
+    res.redirect('/admin/books');
+});
 
 // Admin Login Routes
 router.get('/login', (req, res) => {
@@ -40,18 +34,5 @@ router.post('/login', (req, res) => {
     });
 });
 
-// Redirect dashboard to books
-router.get('/dashboard', isAdmin, (req, res) => {
-    res.redirect('/admin/books');
-});
 
-// Default admin route redirects to books
-router.get('/', isAdmin, (req, res) => {
-    res.redirect('/admin/books');
-});
-
-// Use the separate route files
-router.use('/books', bookRoutes);
-router.use('/customers', customerRoutes);
-
-module.exports.router = router;
+module.exports = router;

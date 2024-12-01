@@ -3,8 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const config = require('../../config.json');
-const adminRoutes = require('./adminRoutes');
-const isAdmin = adminRoutes.isAdmin;
+const {isAdmin} = require('./middleware.js')
 
 const connection = mysql.createConnection(config.databaseUrl);
 
@@ -12,11 +11,16 @@ const connection = mysql.createConnection(config.databaseUrl);
 router.get('/', isAdmin, (req, res) => {
     const query = `
         SELECT 
-            c.*, 
-            COUNT(a.address_id) as address_count
+            c.*,
+            a.address_id,
+            a.city,
+            a.street_name,
+            a.building_name,
+            a.floor_number,
+            a.zipcode,
+            a.details
         FROM customers c
         LEFT JOIN addresses a ON c.customer_id = a.customer_id
-        GROUP BY c.customer_id
     `;
 
     connection.query(query, (err, customers) => {
@@ -24,8 +28,6 @@ router.get('/', isAdmin, (req, res) => {
             console.error(err);
             return res.status(500).send('Error retrieving customers');
         }
-        
-        // Rest of your customer route logic...
         res.render('admin/customers', { 
             customers,
             path: '/admin/customers'
@@ -33,12 +35,11 @@ router.get('/', isAdmin, (req, res) => {
     });
 });
 
-// Update customer and addresses
-router.post('/customers/edit/:id', isAdmin, (req, res) => {
+router.post('/edit/:id', isAdmin, (req, res) => {
     const customerId = req.params.id;
-    const { first_name, last_name, email, phone_number, addresses } = req.body;
+    const { first_name, last_name, email, phone_number, 
+            city, street_name, building_name, floor_number, zipcode, details } = req.body;
 
-    // Start a transaction
     connection.beginTransaction(err => {
         if (err) {
             console.error(err);
@@ -62,40 +63,49 @@ router.post('/customers/edit/:id', isAdmin, (req, res) => {
                     });
                 }
 
-                // Handle addresses
-                const addressPromises = addresses.map(addr => {
-                    if (addr.address_id) {
-                        // Update existing address
-                        return new Promise((resolve, reject) => {
-                            connection.query(
-                                `UPDATE addresses 
-                                SET city = ?, street_name = ?, building_name = ?, 
-                                    floor_number = ?, zipcode = ?, details = ?
-                                WHERE address_id = ? AND customer_id = ?`,
-                                [addr.city, addr.street_name, addr.building_name, 
-                                 addr.floor_number, addr.zipcode, addr.details, 
-                                 addr.address_id, customerId],
-                                err => err ? reject(err) : resolve()
-                            );
-                        });
-                    } else {
-                        // Insert new address
-                        return new Promise((resolve, reject) => {
-                            connection.query(
-                                `INSERT INTO addresses 
-                                (customer_id, city, street_name, building_name, 
-                                 floor_number, zipcode, details)
-                                VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                                [customerId, addr.city, addr.street_name, addr.building_name,
-                                 addr.floor_number, addr.zipcode, addr.details],
-                                err => err ? reject(err) : resolve()
-                            );
+                // First check if address exists
+                const checkAddressQuery = 'SELECT address_id FROM addresses WHERE customer_id = ?';
+                connection.query(checkAddressQuery, [customerId], (err, results) => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error(err);
+                            res.status(500).send('Error checking address existence');
                         });
                     }
-                });
 
-                Promise.all(addressPromises)
-                    .then(() => {
+                    let addressQuery;
+                    let addressParams;
+
+                    if (results.length > 0) {
+                        // Update existing address
+                        addressQuery = `
+                            UPDATE addresses 
+                            SET city = ?, street_name = ?, building_name = ?, 
+                                floor_number = ?, zipcode = ?, details = ?
+                            WHERE customer_id = ?
+                        `;
+                        addressParams = [city, street_name, building_name, 
+                                      floor_number, zipcode, details, customerId];
+                    } else {
+                        // Insert new address
+                        addressQuery = `
+                            INSERT INTO addresses 
+                            (customer_id, city, street_name, building_name, 
+                             floor_number, zipcode, details)
+                            VALUES (?, ?, ?, ?, ?, ?, ?)
+                        `;
+                        addressParams = [customerId, city, street_name, building_name,
+                                      floor_number, zipcode, details];
+                    }
+
+                    connection.query(addressQuery, addressParams, (err) => {
+                        if (err) {
+                            return connection.rollback(() => {
+                                console.error(err);
+                                res.status(500).send('Error updating address');
+                            });
+                        }
+
                         connection.commit(err => {
                             if (err) {
                                 return connection.rollback(() => {
@@ -105,27 +115,51 @@ router.post('/customers/edit/:id', isAdmin, (req, res) => {
                             }
                             res.redirect('/admin/customers');
                         });
-                    })
-                    .catch(err => {
-                        connection.rollback(() => {
-                            console.error(err);
-                            res.status(500).send('Error updating addresses');
-                        });
                     });
+                });
             }
         );
     });
 });
 
-// Delete customer (will cascade delete addresses due to FK constraint)
-router.post('/customers/delete/:id', isAdmin, (req, res) => {
-    const query = 'DELETE FROM customers WHERE customer_id = ?';
-    connection.query(query, [req.params.id], (err, results) => {
+router.post('/delete/:id', isAdmin, (req, res) => {
+    connection.beginTransaction(err => {
         if (err) {
             console.error(err);
-            return res.status(500).send('Error deleting customer');
+            return res.status(500).send('Error starting transaction');
         }
-        res.redirect('/admin/customers');
+
+        // First delete the address
+        const deleteAddressQuery = 'DELETE FROM addresses WHERE customer_id = ?';
+        connection.query(deleteAddressQuery, [req.params.id], (err) => {
+            if (err) {
+                return connection.rollback(() => {
+                    console.error(err);
+                    res.status(500).send('Error deleting customer address');
+                });
+            }
+
+            // Then delete the customer
+            const deleteCustomerQuery = 'DELETE FROM customers WHERE customer_id = ?';
+            connection.query(deleteCustomerQuery, [req.params.id], (err) => {
+                if (err) {
+                    return connection.rollback(() => {
+                        console.error(err);
+                        res.status(500).send('Error deleting customer');
+                    });
+                }
+
+                connection.commit(err => {
+                    if (err) {
+                        return connection.rollback(() => {
+                            console.error(err);
+                            res.status(500).send('Error committing transaction');
+                        });
+                    }
+                    res.redirect('/admin/customers');
+                });
+            });
+        });
     });
 });
 

@@ -3,9 +3,7 @@ const express = require('express');
 const router = express.Router();
 const mysql = require('mysql2');
 const config = require('../../config.json');
-const adminRoutes = require('./adminRoutes');
-const isAdmin = adminRoutes.isAdmin;
-
+const {isAdmin} = require('./middleware.js')
 const connection = mysql.createConnection(config.databaseUrl);
 
 // Books CRUD

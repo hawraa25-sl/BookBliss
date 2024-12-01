@@ -1,0 +1,210 @@
+extends dashboard
+
+block content
+    .container-fluid
+        h2.mb-4 Manage Gift Cards
+        
+        .mb-4
+            button.btn.btn-primary(data-bs-toggle="modal" data-bs-target="#createGiftCardModal") 
+                i.fas.fa-plus.me-2
+                | Create Gift Card
+
+        table.table
+            thead
+                tr
+                    th Gift Card ID
+                    th Code
+                    th Amount
+                    th Expiry Date
+                    th Status
+                    th Used By
+                    th Order ID
+                    th Actions
+            tbody
+                each card in giftCards
+                    tr(class=card.is_redeemed ? 'table-light' : '')
+                        td= card.gift_card_id
+                        td
+                            code.bg-light.p-1= card.code
+                        td= `$${(card.amount * 1).toFixed(2)}`
+                        td
+                            - const expiryDate = new Date(card.expiry_date)
+                            - const today = new Date()
+                            span(class=expiryDate < today ? 'text-danger' : '')= expiryDate.toLocaleDateString()
+                        td
+                            if card.is_redeemed
+                                span.badge.bg-secondary Used
+                            else if expiryDate < today
+                                span.badge.bg-danger Expired
+                            else
+                                span.badge.bg-success Active
+                        td= card.redeemed_by || '-'
+                        td
+                            if card.used_in_order
+                                a(href=`/admin/orders#${card.used_in_order}`) #{card.used_in_order}
+                            else
+                                | -
+                        td
+                            button.btn.btn-sm.btn-warning.me-2(onclick=`editGiftCard(${JSON.stringify(card)})`) Edit
+                            if !card.used_in_order
+                                button.btn.btn-sm.btn-danger(onclick=`confirmDelete(${card.gift_card_id}, "${card.code}")`) Delete
+
+        // Create Gift Card Modal
+        #createGiftCardModal.modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title Create Gift Card
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        form(action="/admin/gift-cards/create" method="POST")
+                            .mb-3
+                                label.form-label Amount ($)
+                                input.form-control(
+                                    type="number" 
+                                    name="amount" 
+                                    step="0.01" 
+                                    min="1" 
+                                    required
+                                )
+                            .mb-3
+                                label.form-label Expiry Date
+                                input.form-control(
+                                    type="date" 
+                                    name="expiry_date" 
+                                    required
+                                    min=new Date().toISOString().split('T')[0]
+                                )
+                            button.btn.btn-primary(type="submit") Create Gift Card
+
+        // Edit Gift Card Modal
+        #editGiftCardModal.modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title Edit Gift Card
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        form#editGiftCardForm(method="POST")
+                            .mb-3
+                                label.form-label Code
+                                input.form-control(
+                                    type="text"
+                                    name="code"
+                                    pattern="[0-9]{12}"
+                                    title="12-digit number"
+                                    required
+                                )
+                            .mb-3
+                                label.form-label Amount ($)
+                                input.form-control(
+                                    type="number"
+                                    name="amount"
+                                    step="0.01"
+                                    min="1"
+                                    required
+                                )
+                            .mb-3
+                                label.form-label Expiry Date
+                                input.form-control(
+                                    type="date"
+                                    name="expiry_date"
+                                    required
+                                )
+                            .mb-3
+                                .form-check
+                                    input.form-check-input(
+                                        type="checkbox"
+                                        name="is_redeemed"
+                                        id="is_redeemed"
+                                    )
+                                    label.form-check-label(for="is_redeemed") Marked as Redeemed
+                            button.btn.btn-primary(type="submit") Save Changes
+
+        // Delete Confirmation Modal
+        #deleteGiftCardModal.modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title Delete Gift Card
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        p#deleteConfirmText
+                    .modal-footer
+                        button.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                        form#deleteGiftCardForm(method="POST")
+                            button.btn.btn-danger(type="submit") Delete
+
+        // Alert Modal
+        #alertModal.modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title Alert
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        p#alertMessage
+                    .modal-footer
+                        button.btn.btn-primary(data-bs-dismiss="modal") OK
+
+        script.
+            // Function to show alert modal
+            function showAlert(message) {
+                const modal = document.getElementById('alertModal');
+                document.getElementById('alertMessage').textContent = message;
+                new bootstrap.Modal(modal).show();
+            }
+
+            // Check for URL parameters on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const error = urlParams.get('error');
+                
+                if (error === 'duplicate_code') {
+                    showAlert('Error: This gift card code already exists.');
+                } else if (error === 'card_in_use') {
+                    showAlert('Error: Cannot delete a gift card that has been used in an order.');
+                } else if (error === 'database_error') {
+                    showAlert('Error: A database error occurred. Please try again.');
+                } else if (error === 'create_error') {
+                    showAlert('Error: Failed to create gift card. Please try again.');
+                } else if (error === 'update_error') {
+                    showAlert('Error: Failed to update gift card. Please try again.');
+                } else if (error === 'delete_error') {
+                    showAlert('Error: Failed to delete gift card. Please try again.');
+                }
+
+                // Remove the error parameter from URL after showing the alert
+                if (error) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            });
+
+            function editGiftCard(card) {
+                const form = document.getElementById('editGiftCardForm');
+                form.action = `/admin/gift-cards/edit/${card.gift_card_id}`;
+                
+                form.querySelector('[name="code"]').value = card.code;
+                form.querySelector('[name="amount"]').value = card.amount;
+                form.querySelector('[name="expiry_date"]').value = card.expiry_date.split('T')[0];
+                form.querySelector('[name="is_redeemed"]').checked = card.is_redeemed;
+
+                new bootstrap.Modal(document.getElementById('editGiftCardModal')).show();
+            }
+
+            function confirmDelete(giftCardId, code) {
+                const modal = document.getElementById('deleteGiftCardModal');
+                const confirmText = document.getElementById('deleteConfirmText');
+                const deleteForm = document.getElementById('deleteGiftCardForm');
+
+                confirmText.textContent = `Are you sure you want to delete gift card "${code}"?`;
+                deleteForm.action = `/admin/gift-cards/delete/${giftCardId}`;
+
+                new bootstrap.Modal(modal).show();
+            }
+
+            // Set minimum date for create form
+            document.addEventListener('DOMContentLoaded', function() {
+                const today = new Date().toISOString().split('T')[0];
+                document.querySelector('#createGiftCardModal input[name="expiry_date"]').min = today;
+            });
