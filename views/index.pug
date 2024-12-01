@@ -37,12 +37,12 @@ html(lang="en")
                         a(href="/#contactus") Contact US
                     if user
                         li
-                            a(href="/account")= user.first_name
+                            a(href="/account") My Account
                         li
                             a(href="/cart") Cart
                     else
                         li
-                            a(href="/account") My Account
+                            a(href="/account") Login/Sign Up
 
 
         block content
