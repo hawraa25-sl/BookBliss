@@ -1,0 +1,166 @@
+// /views/admin/customers.pug
+extends dashboard
+
+block content
+    .container-fluid
+        h2.mb-4 Manage Customers
+        
+        table.table
+            thead
+                tr
+                    th Customer ID
+                    th Name
+                    th Email
+                    th Phone
+                    th Created At
+                    th # of Addresses
+                    th Actions
+            tbody
+                each customer in customers
+                    tr
+                        td= customer.customer_id
+                        td= customer.first_name + ' ' + customer.last_name
+                        td= customer.email
+                        td= customer.phone_number || 'N/A'
+                        td= new Date(customer.created_at).toLocaleDateString()
+                        td= customer.address_count || 0
+                        td
+                            button.btn.btn-sm.btn-warning.me-2(onclick=`viewCustomerDetails(${JSON.stringify(customer)}, ${JSON.stringify(customer.addresses || [])})`) View/Edit
+                            button.btn.btn-sm.btn-danger(onclick=`confirmDelete(${customer.customer_id}, "${customer.first_name} ${customer.last_name}")`) Delete
+
+        // View/Edit Customer Modal
+        #customerModal.modal.fade(tabindex='-1')
+            .modal-dialog.modal-lg
+                .modal-content
+                    .modal-header
+                        h5.modal-title Customer Details
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        form#customerForm(method="POST")
+                            h6.mb-3 Customer Information
+                            .row
+                                .col-md-6.mb-3
+                                    label.form-label First Name
+                                    input.form-control(name="first_name" required)
+                                .col-md-6.mb-3
+                                    label.form-label Last Name
+                                    input.form-control(name="last_name" required)
+                            .mb-3
+                                label.form-label Email
+                                input.form-control(type="email" name="email" required)
+                            .mb-3
+                                label.form-label Phone Number
+                                input.form-control(type="tel" name="phone_number")
+                            
+                            h6.mt-4.mb-3 Addresses
+                            #addressesContainer
+                                // Addresses will be dynamically added here
+                            
+                            button.btn.btn-outline-primary.btn-sm.mt-2.mb-3(type="button" onclick="addNewAddressFields()") 
+                                i.fas.fa-plus.me-1
+                                | Add New Address
+                            
+                            .mt-4
+                                button.btn.btn-primary(type="submit") Save Changes
+
+        // Delete Confirmation Modal
+        #deleteConfirmModal.modal.fade
+            .modal-dialog
+                .modal-content
+                    .modal-header
+                        h5.modal-title Delete Confirmation
+                        button.btn-close(data-bs-dismiss="modal")
+                    .modal-body
+                        p#deleteConfirmText
+                        .alert.alert-warning
+                            | This will also delete all associated addresses for this customer.
+                    .modal-footer
+                        button.btn.btn-secondary(data-bs-dismiss="modal") Cancel
+                        form#deleteCustomerForm(method="POST")
+                            button.btn.btn-danger(type="submit") Delete
+
+        script.
+            function createAddressFields(address = {}, index) {
+                return `
+                    <div class="address-entry border rounded p-3 mb-3" data-address-id="${address.address_id || ''}">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="mb-0">Address ${index + 1}</h6>
+                            <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeAddress(this)">
+                                Remove
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">City</label>
+                                <input class="form-control" name="addresses[${index}][city]" value="${address.city || ''}" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Street Name</label>
+                                <input class="form-control" name="addresses[${index}][street_name]" value="${address.street_name || ''}" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Building Name</label>
+                                <input class="form-control" name="addresses[${index}][building_name]" value="${address.building_name || ''}" required>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Floor Number</label>
+                                <input class="form-control" type="number" name="addresses[${index}][floor_number]" value="${address.floor_number || ''}" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Zipcode</label>
+                                <input class="form-control" name="addresses[${index}][zipcode]" value="${address.zipcode || ''}">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Additional Details</label>
+                                <textarea class="form-control" name="addresses[${index}][details]" rows="2">${address.details || ''}</textarea>
+                            </div>
+                        </div>
+                        <input type="hidden" name="addresses[${index}][address_id]" value="${address.address_id || ''}">
+                    </div>
+                `;
+            }
+
+            function addNewAddressFields() {
+                const container = document.getElementById('addressesContainer');
+                const currentCount = container.getElementsByClassName('address-entry').length;
+                container.insertAdjacentHTML('beforeend', createAddressFields({}, currentCount));
+            }
+
+            function removeAddress(button) {
+                button.closest('.address-entry').remove();
+            }
+
+            function viewCustomerDetails(customer, addresses) {
+                const form = document.getElementById('customerForm');
+                form.action = `/admin/customers/edit/${customer.customer_id}`;
+                
+                // Populate customer fields
+                form.querySelector('[name="first_name"]').value = customer.first_name;
+                form.querySelector('[name="last_name"]').value = customer.last_name;
+                form.querySelector('[name="email"]').value = customer.email;
+                form.querySelector('[name="phone_number"]').value = customer.phone_number || '';
+
+                // Clear and populate addresses
+                const addressesContainer = document.getElementById('addressesContainer');
+                addressesContainer.innerHTML = '';
+                addresses.forEach((address, index) => {
+                    addressesContainer.insertAdjacentHTML('beforeend', createAddressFields(address, index));
+                });
+
+                new bootstrap.Modal(document.getElementById('customerModal')).show();
+            }
+
+            function confirmDelete(customerId, customerName) {
+                const modal = document.getElementById('deleteConfirmModal');
+                const confirmText = document.getElementById('deleteConfirmText');
+                const deleteForm = document.getElementById('deleteCustomerForm');
+
+                confirmText.textContent = `Are you sure you want to delete "${customerName}"?`;
+                deleteForm.action = `/admin/customers/delete/${customerId}`;
+
+                new bootstrap.Modal(modal).show();
+            }

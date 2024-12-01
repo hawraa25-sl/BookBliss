@@ -51,6 +51,10 @@ app.use('/checkout', require('./routes/checkout'));
 app.use('/address', require('./routes/address'));
 app.use('/shopNow', require('./routes/shopNow'));  
 app.use('/account', require('./routes/accountRoutes'));
+app.use('/admin', require('./routes/admin/adminRoutes'));
+// In your index.js where you set up admin routes:
+const adminRoutes = require('./routes/admin/adminRoutes');
+app.use('/admin', adminRoutes.router);
 app.use(express.static(path.join(__dirname, 'public')));
  
 const connection = require('./database')
@@ -76,10 +80,6 @@ app.get('/books', (req, res) => {
   });
 })
 
-app.get('/admin', (req, res) => {
-  res.send("This is the admin page<br>Under construction")
-})
-
 app.get('/*', (req, res) => {
   res.redirect('/')
 })
@@ -87,4 +87,3 @@ app.get('/*', (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
- 
