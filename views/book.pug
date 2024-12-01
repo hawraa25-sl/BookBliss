@@ -20,9 +20,9 @@ block content
         p.description= book.description
         if user
           if book.stock > 0
-              form(action="/cart/add" method="POST" style="display: inline")
-                input(type="hidden" name="book_id" value=book.book_id)
-                button.btn-add-cart Add to Cart
+            form(action="/cart/add" method="POST" style="display: inline")
+              input(type="hidden" name="book_id" value=book.book_id)
+              button.btn-add-cart Add to Cart
           else
             button.btn-out-stock(disabled) Out of Stock
         a.btn-back(href="javascript:history.back()") Back to List
@@ -41,8 +41,27 @@ block content
                   - var stars = review.rating
                   while stars > 0
                     span.star ★
-                    - stars--
+                    - stars--  
               .review-content
                 p= review.review_text
       else
         p.no-reviews No reviews yet for this book.
+
+      h3 Add Your Review
+      if user
+        form(action=`/book/${book.book_id}/review` method="POST")
+          input(type="hidden" name="customer_id" value=user.customer_id)
+          div
+            label(for="rating") Rating:
+            select(name="rating" required)
+              option(value="1") 1
+              option(value="2") 2
+              option(value="3") 3
+              option(value="4") 4
+              option(value="5") 5
+          div
+            label(for="review_text") Your Review:
+            textarea(name="review_text" placeholder="Write your review here..." required)
+          button.btn-submit(type="submit") Submit Review
+      else
+        p.login-reminder Please log in to submit a review.

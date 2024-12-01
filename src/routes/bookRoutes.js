@@ -34,9 +34,34 @@ router.get('/:id', (req, res) => {
             }
             res.render('book', { 
                 book: bookResults[0],
-                reviews: reviewResults
+                reviews: reviewResults,
+                user: req.user
             });
         });
+    });
+});
+router.post('/:id/review', (req, res) => {
+    const bookId = req.params.id;
+    const { customer_id, rating, review_text } = req.body;
+
+    // Validate input
+    if (!customer_id || !rating || rating < 1 || rating > 5 || !review_text) {
+        return res.status(400).send('Invalid input: Ensure all fields are filled and rating is between 1 and 5.');
+    }
+
+    const query = `
+        INSERT INTO reviews (book_id, customer_id, rating, review_text, review_date)
+        VALUES (?, ?, ?, ?, NOW())
+    `;
+
+    connection.query(query, [bookId, customer_id, rating, review_text], (err, results) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error adding review');
+        }
+
+        // Redirect back to the book details page
+        res.redirect(`/books/${bookId}`);
     });
 });
 

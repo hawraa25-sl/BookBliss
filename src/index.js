@@ -38,6 +38,8 @@ app.use(function (req, res, next) {
   }
   next();
 });
+ 
+
 // Middleware to log the session for debugging
 
 // Check session status route
