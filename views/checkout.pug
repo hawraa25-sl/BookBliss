@@ -122,7 +122,15 @@ block content
             placeholder="123456789012"
             maxlength="12"
           )
-
+         
+          label(for="gift_card_amount") Amount:
+          input#gift_card_amount(
+            type="number"
+            name="gift_card_amount"
+            placeholder="Enter the gift card amount"
+            min="10"
+            required 
+          )  
       // Submit Button
       button.btn-submit(type="submit") Place Order
 

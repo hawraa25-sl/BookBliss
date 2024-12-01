@@ -185,6 +185,11 @@ section {
     font-size: 22px;
     position: relative;
     nav-left: 5%;
+    color:#39aec9cd;
+     
+}
+a.category-item{
+    text-decoration: none;
 }
 
 .cat-books .category-item p {
@@ -249,9 +254,12 @@ section {
     border-radius: 50px;
     transition: all 0.5s;
 }
+a.btn2{
+    text-decoration: none;
+}
 
 .set-row .about-content .btn2:hover {
-    background: #dccfcf;
+    background:  white;
     color: #3aabc59c;
 }
 
@@ -381,8 +389,14 @@ footer {
     font-size: 20px; */
 }
 
-/*log in styles*/
-
+/*footer styles*/
+li.py-1 a{
+    text-decoration: none;
+    color:black;
+}
+.col-6.col-lg-3 a{
+    text-decoration: none;
+}
 
 
 /*Responsive*/
