@@ -73,8 +73,8 @@ router.post('/order', async (req, res) => {
 
     // Insert the order
     const orderResult = await query(
-      'INSERT INTO orders (customer_id, total_amount, payment_method) VALUES (?, ?, ?)',
-      [customerId, totalAmount, payment_method]
+      'INSERT INTO orders (customer_id, total_amount, payment_method, gift_card_id) VALUES (?, ?, ?, ?)',
+      [customerId, totalAmount, payment_method, validateGCResult[0].gift_card_id]
     );
     const orderId = orderResult.insertId;
 
