@@ -95,6 +95,7 @@ body {
     font-size: 1rem;
     font-weight: 500;
     transition: color 0.3s ease;
+    text-decoration: none;
 }
 
 .nav-actions a:hover {
