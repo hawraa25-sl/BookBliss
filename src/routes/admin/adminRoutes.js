@@ -10,6 +10,7 @@ router.use('/books', require('./bookRoutes'));
 router.use('/customers', require('./customerRoutes'));
 router.use('/orders', require('./orderRoutes'));
 router.use('/gift-cards', require('./giftCardRoutes'));
+router.use('/reviews', require('./reviews'));
 
 // Default admin route redirects to books
 router.get('/', isAdmin, (req, res) => {
