@@ -115,6 +115,7 @@ block content
             type="text"
             name="card_name"
             placeholder="Enter name as shown on card"
+            oninput="this.value = this.value.replace(/[^A-Za-z ]/g, '')"
           )
 
         // Gift Card Fields (initially hidden)

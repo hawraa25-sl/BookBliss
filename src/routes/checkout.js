@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const connection = require('../database'); // Your database connection
 const getCart = require('../getCart'); // Utility function for fetching the cart
+const fakeCreditCardList = require('../fakeCreditCardList');
 
 // Promise wrapper for database queries
 const query = (sql, params) =>
@@ -71,10 +72,22 @@ router.post('/order', async (req, res) => {
       )
     }
 
+    let matchingCardsList
+    if (req.body.card_number) {
+      matchingCardsList = fakeCreditCardList.filter(cc => {
+        return cc.card_number == req.body.card_number
+        && cc.expiry_date == req.body.expiry_date
+        && cc.cvv == req.body.cvv
+      })
+      if (matchingCardsList.length !== 1) {
+        throw "Card details is not valid. Please Try again"
+      }
+    }
+
     // Insert the order
     const orderResult = await query(
       'INSERT INTO orders (customer_id, total_amount, payment_method, gift_card_id) VALUES (?, ?, ?, ?)',
-      [customerId, totalAmount, payment_method, validateGCResult[0].gift_card_id]
+      [customerId, totalAmount, payment_method, validateGCResult?.[0]?.gift_card_id]
     );
     const orderId = orderResult.insertId;
 
@@ -113,6 +126,7 @@ router.post('/order', async (req, res) => {
       totalAmount,
     });
   } catch (error) {
+    console.error(error)
     res.render('checkout', { cart, error: `Error placing order: ${error}`})
   }
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { query } = require('../query.js');
+const fakeCreditCardList = require('../fakeCreditCardList.js');
 
 // Gift cards page
 router.get('/', (req, res) => {
@@ -24,11 +25,23 @@ router.post('/buy', async (req, res) => {
     }
 
     try {
+        let matchingCardsList
+        if (req.body.card_number) {
+          matchingCardsList = fakeCreditCardList.filter(cc => {
+            return cc.card_number == req.body.card_number
+            && cc.expiry_date == req.body.expiry_date
+            && cc.cvv == req.body.cvv
+          })
+          if (matchingCardsList.length !== 1) {
+            throw "Card details is not valid. Please Try again"
+          }
+        }
+
         const insertGCResult = await query(`
             INSERT INTO gift_cards (code, amount, expiry_date, is_redeemed)
             VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 YEAR), 0)
         `, [giftCardCode, parseFloat(amount)]); // Insert the new gift card into the database
-
+        
         // Send success message
         res.render('account/giftcard', {
             message: `Gift card created with code: ${giftCardCode} and amount: $${parseFloat(amount).toFixed(2)}`
@@ -42,7 +55,7 @@ router.post('/buy', async (req, res) => {
         }
 
         // General error handling
-        return res.render('account/giftcard', { error: 'An unexpected error occurred. Please try again.' });
+        return res.render('account/giftcard', { error: `Error purchasing gift card: ${err}` });
     }
 });
 

@@ -1,30 +1,34 @@
-// const fakeCreditCardList = [
-//     {
-//       card_number: '1234567890123456',
-//       cvv: '123',
-//       card_name: 'John Doe'
-//     },
-//     {
-//       card_number: '2345678901234567',
-//       cvv: '234',
-//       card_name: 'Jane Smith'
-//     },
-//     {
-//       card_number: '3456789012345678',
-//       cvv: '345',
-//       card_name: 'Alice Johnson'
-//     },
-//     {
-//       card_number: '4567890123456789',
-//       cvv: '456',
-//       card_name: 'Bob Brown'
-//     },
-//     {
-//       card_number: '5678901234567890',
-//       cvv: '567',
-//       card_name: 'Charlie Davis'
-//     }
-//   ];
-  
-//  module.exports = fakeCreditCardList;
-  
+const fakeCreditCardList = [
+    {
+        card_number: '1234 5678 9012 3456',
+        cvv: '123',
+        expiry_date: '12/09',
+        card_name: 'John Doe'
+    },
+    {
+        card_number: '2345 6789 0123 4567',
+        cvv: '234',
+        expiry_date: '12/09',
+        card_name: 'Jane Smith'
+    },
+    {
+        card_number: '3456 7890 1234 5678',
+        cvv: '345',
+        expiry_date: '12/09',
+        card_name: 'Alice Johnson'
+    },
+    {
+        card_number: '4567 8901 2345 6789',
+        cvv: '456',
+        expiry_date: '12/09',
+        card_name: 'Bob Brown'
+    },
+    {
+        card_number: '5678 9012 3456 7890',
+        cvv: '567',
+        expiry_date: '12/09',
+        card_name: 'Charlie Davis'
+    }
+];
+
+module.exports = fakeCreditCardList;

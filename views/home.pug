@@ -1,5 +1,38 @@
 extends index
 
+block scripts
+    script(type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js")
+    script.
+        (function(){
+            emailjs.init({
+                publicKey: "LDoafB8Uv8xwMEgAZ",
+            });
+        })();
+
+        console.log(document.getElementById('contactForm'))
+        document.getElementById('contactForm').addEventListener('submit', async function (e) {
+            e.preventDefault(); // Prevent the default form submission
+
+            const form = e.target;
+            const formData = {
+                name: form.name.value,
+                email: form.email.value,
+                phone: form.phone.value,
+                message: form.message.value,
+            };
+
+            emailjs.send('service_0ex0xdm', 'template_2ritsgt', formData).then(
+                (response) => {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert("success")
+                },
+                (error) => {
+                    alert("error sending email")
+                    console.log('FAILED...', error);
+                },
+            );
+        });
+
 block head-ext
     style
         include styles/home.css
@@ -18,7 +51,7 @@ block content
     //- Categories section
     section#categories
 
-    
+
         .cat-row
             .cat-header
                 h2 Book Categories
@@ -48,12 +81,12 @@ block content
     section#contactus
     .contact-row
         .col
-          h2 Contact Us
-          br
-          img(src="/images/contactus.jpg" alt="")
+            h2 Contact Us
+            br
+            img(src="/images/contactus.jpg" alt="")
         .col  
             h3 We would love to hear from you.
-            form(action="")
+            form#contactForm
                 input(type="text" placeholder="Name" name="name" required)
                 br
                 input(type="text" placeholder="Email" name="email" required)
@@ -65,4 +98,3 @@ block content
                 br
                 br
                 button(type="submit") SEND
-        
